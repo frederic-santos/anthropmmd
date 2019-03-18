@@ -63,7 +63,7 @@ shinyUI(fluidPage(theme="kappa.css",
 				),
 				helpText("No missing values allowed here. Row names are mandatory.")
 			),
-			actionButton("loadData", "Load dataset"), # bouton de chargement de données (server.R attend un clic pour démarrer)
+			actionButton("loadData", "Load dataset", icon=icon("file-upload")), # bouton de chargement de données (server.R attend un clic pour démarrer)
 			br(),
 			br(),
 			
@@ -150,7 +150,7 @@ shinyUI(fluidPage(theme="kappa.css",
 							strong("Graph options"),
 							checkboxInput("aspMDSplot", label="Make all axes use the same scale", value=TRUE),
 							checkboxInput("axesMDSplot", label="Display axes on the MDS plot", value=TRUE),
-							p(checkboxInput("checkboxGOFstats", label="Display goodness of fit statistics on the MDS plot", value=FALSE), actionButton("helpMDS", label="Help", class="btn-help"))
+							p(checkboxInput("checkboxGOFstats", label="Display goodness of fit statistics on the MDS plot", value=FALSE), actionButton("helpMDS", label="Help", class="btn-help", icon=icon("info-circle")))
 						)
 					),
 					br(),
