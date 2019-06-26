@@ -1,5 +1,7 @@
+export("binary_to_table")
 export("mmd")
 export("StartMMD")
+export("table_relfreq")
 import(shiny)
 importFrom("scatterplot3d", "scatterplot3d")
 importFrom("smacof", "smacofSym")

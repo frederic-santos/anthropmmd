@@ -1,13 +1,11 @@
 shinyServer(function(input, output, session) {
 
-    source("binary_to_table.R")
     source("calcIMD.R")	
     source("extractGroups.R")
     source("fisherTestTab.R")
     source("gphMDS.R")
     source("max3.R")
     source("select_vars.R")
-    source("table_relfreq.R")
     source("validDataMMD.R")
     library(scatterplot3d)
     library(smacof)
@@ -38,7 +36,7 @@ shinyServer(function(input, output, session) {
                 output$text_table_MMDSym <- renderText("Symmetrical matrix of MMD values") 
                 output$text_table_MMDSignif <- renderText("MMD values (upper triangular part) and their significance (indicated by a * in the lower part; 'NS'='non significant')") # ... jusqu'ici.
                 if (input$typeData=="raw") { # si c'est un fichier de données brutes...
-                    dat <- binary_to_table(dat) # on le convertit en table d'effectifs et fréquences
+                    dat <- binary_to_table(dat, relative = FALSE) # on le convertit en table d'effectifs et fréquences
                 }
                 dat <- table_relfreq(dat)
                 assign("dat", dat, envir=myenvg) # on place le jeu de données (qui est desormais forcement de type table) dans l'environnement global

@@ -1,5 +1,6 @@
-binary_to_table <- function(data) {
+binary_to_table <- function(data, relative = FALSE) {
 ### data: matrix of binary data, + one column for the group indicator
+### relative: boolean, indicates if the last rows of the table must contain frequencies (i.e., number of individuals having a given trait) or relative frequencies (i.e., proportions)
 ### Converts this data frame into a table of group sample sizes and frequencies.
 
     ## 1. Set some constants:
@@ -23,5 +24,9 @@ binary_to_table <- function(data) {
     }
 
     ## 4. Return the results:
-    return(MatRes)
+    if (relative == FALSE) {
+        return(MatRes)
+    } else {
+        return(table_relfreq(MatRes))
+    }
 }
