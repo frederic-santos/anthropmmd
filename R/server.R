@@ -1,15 +1,5 @@
-shinyServer(function(input, output, session) {
-
-    source("calcIMD.R")	
-    source("extractGroups.R")
-    source("fisherTestTab.R")
-    source("gphMDS.R")
-    source("max3.R")
-    source("select_vars.R")
-    source("validDataMMD.R")
-    library(smacof)
-    library(scatterplot3d)
-    
+server <- shinyServer(function(input, output, session) {
+ 
     myenvg = new.env() # environnement privé au package ; contiendra le jeu de données (vu comme une variable globale)
 
 ###########################################################

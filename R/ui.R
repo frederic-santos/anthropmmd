@@ -1,4 +1,4 @@
-shinyUI(fluidPage(theme="kappa.css",
+ui <- shinyUI(fluidPage(theme="style/kappa.css",
 	
 	titlePanel("AnthropMMD — A GUI for Smith's Mean Measure of Divergence"),
 	#tags$style(HTML(".js-irs-0 .irs-single, .js-irs-0 .irs-bar-edge, .js-irs-0 .irs-bar {background: #0098B6}")), # pour régler la couleur de la barre du slider
