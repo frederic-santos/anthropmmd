@@ -26,14 +26,25 @@ mmd(data, angular = c("Anscombe", "Freeman"))
   measure of divergence for intergroup comparisons using nonmetric
   data. \emph{Dental Anthropology}, \bold{17}(3), 83--93.
 
-  Nikita, E. (2015) A critical review of the mean measure of divergence and Mahalanobis distances using artificial data and new approaches to the estimation of biodistances employing nonmetric traits. \emph{American Journal of Physical Anthropology}, \bold{157}, 284--294. doi: 10.1002/ajpa.22708
+  Nikita, E. (2015) A critical review of the mean measure of divergence
+  and Mahalanobis distances using artificial data and new approaches to
+  the estimation of biodistances employing nonmetric
+  traits. \emph{American Journal of Physical Anthropology}, \bold{157},
+  284--294. doi: 10.1002/ajpa.22708
 }
 \seealso{
   \code{\link{StartMMD}}
 }
 \examples{
+# Load and visualize a binary dataset:
 data(toyMMD)
 head(toyMMD)
-# to be continued...
+# Convert this dataframe into a table of sample sizes and relative
+# frequencies:
+tab <- binary_to_table(toyMMD, relative = TRUE)
+tab
+# Compute and display MMD values:
+mmd.out <- mmd(tab, angular = "Anscombe")
+mmd.out$MMDSym
 }
 \author{Frédéric Santos, \email{frederic.santos@u-bordeaux.fr}}
