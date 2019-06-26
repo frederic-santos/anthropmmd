@@ -7,7 +7,7 @@ AnthropMMD
 
 1. Install *devtools* by typing the following command line into the R console:
 
-	install.packages("devtools")
+	   install.packages("devtools")
 
 2. Install build environment:
     * **Windows:** Install latest version of *[Rtools](https://cran.r-project.org/bin/windows/Rtools/)*. During the installation process, make sure to select *"Edit the system path"*.
