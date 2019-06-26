@@ -1,5 +1,4 @@
 StartMMD <- function() {
-
- runApp(system.file("AnthropMMDShinyApp", package="AnthropMMD"), launch.browser=TRUE)
-
+    runApp(system.file("AnthropMMDShinyApp", package = "AnthropMMD"),
+           launch.browser = TRUE)
 }
