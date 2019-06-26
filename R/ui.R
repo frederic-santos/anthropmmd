@@ -1,6 +1,6 @@
 ui <- shinyUI(fluidPage(theme="style/kappa.css", # prefix 'style' to locate the CSS file: cf. StartMMD.R
   
-  titlePanel("AnthropMMD — A GUI for Smith's Mean Measure of Divergence"),
+  titlePanel("AnthropMMD \u2014 A GUI for Smith's Mean Measure of Divergence"),
   tags$style(type = "text/css", "
     .irs-bar {width: 100%; background: #0098B6;}
     .irs-bar-edge {background: #0098B6;}
