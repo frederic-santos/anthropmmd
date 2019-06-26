@@ -1,4 +1,4 @@
-select_vars <- function(tab, k = 10, excludeTraits = c("none", "excludeNPT", "excludeQNPT", ou "excludeNCT"), OMDvalue = NULL, groups, formule = c("Anscombe", "Freeman")) {
+select_vars <- function(tab, k = 10, excludeTraits = c("none", "excludeNPT", "excludeQNPT", "excludeNCT"), OMDvalue = NULL, groups, formule = c("Anscombe", "Freeman")) {
 ### tab: table of sample sizes and frequencies
 ### k: numeric value, required minimal number of individuals per group
 ### excludeTraits: scheme of exclusion of non-polymorphic traits
