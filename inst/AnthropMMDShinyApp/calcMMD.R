@@ -1,65 +1,56 @@
-calcMMD <- function(dat, formule) {
-# dat : dataframe, le jeu de données (forcement de type "table", arrivé au stade où on fait appel a ce script)
-# formule : chaîne de caractères, "Anscombe" ou "Freeman", importée depuis l'UI. Formule de transformation angulaire pour les MMD.
-# output -> liste de 3 éléments : 1. la matrice symétrique des "vraies valeurs" de MMD ; 2. la matrice avec les valeurs de MMD dans la partie triangulaire supérieure, et les écarts-types dans la partie triangulaire inférieure ; 3. la matrice indiquant le caractère significatif des MMD par des "*".
+mmd <- function(data, angular = c("Anscombe", "Freeman") {
+### data: table of group sample sizes and frequencies, such as returned by the function table_relfreq
+### angular: choice of a formula for angular transformation
 
-	nbGroupes <- nrow(dat)/2 # dat étant une 'table', le nombre de groupes est nécessairement égal au nombre de lignes divisé par 2.
-	Mat_eff <- dat[1:nbGroupes, ] # la matrice des effectifs
-	Mat_prop <- dat[(nbGroupes+1):(2*nbGroupes), ] # la matrice des fréquences
+    ## 1. Define some useful constants and matrices:
+    nb_groups <- nrow(data) / 2 # number of groups in the data
+    mat_size <- data[1:nb_groups, ] # portion of the data corresponding to the sample sizes
+    mat_freq <- data[(nb_groups+1):(2*nb_groups), ] # portion of the data corresponding to the relative frequencies
 
-	# 1. FORMULE DE LA TRANSFORMATION ANGULAIRE (Anscombe ou FT) :
-	if (formule=="Anscombe") {
-		theta <- function(n,p) { asin((n/(n+3/4))*(1-2*p)) }
-	} else { # Freeman-Tukey
-		theta <- function(n,p) { 0.5*(asin(1-(2*p*n/(n+1)))+asin(1-(2*((p*n)+1)/(n+1)))) }
-	}
+    ## 2. Initialize an empty MMD matrix:
+    mmd_matrix <- matrix(0, nrow = nrow(mat_size), ncol = nrow(mat_size))
+    group_names <- rownames(mat_size)
+    dimnames(mmd_matrix) <- list(substr(group_names,3,nchar(group_names)), substr(group_names,3,nchar(group_names))) # the rows and columns of mmd_matrix will be labeled according to the group names
 
-	# 2. FORMULE SERVANT POUR LE CALCUL DE L'ECART-TYPE DES MMD :
-	sdFormula <- function(nA,nB) { (1/(nA+0.5) + 1/(nB+0.5))^2 }
+    ## 3. Fill in the MMD matrix:
+    for (i in 1:nrow(mmd_matrix)) {
+        for (j in 1:ncol(mmd_matrix)) {             
+            mmd_vect <- rep(NA, ncol(mat_size))
+            if (j > i) { # upper-diagonal part, to be filled with MMD values
+                for (k in 1:length(mmd_vect)) { 
+                    mmd_vect[k] <- compute_md(nA = mat_size[i,k], pA = mat_freq[i,k], nB = mat_size[j,k], pB = mat_freq[j,k], choice = angular) 
+                }
+                mmd_matrix[i, j] <- sum(mmd_vect) / length(mmd_vect) 
+            } else if (i ==j) { # on the diagonal, fill with null values (dissimilarity between a group and itself)
+                mmd_matrix[i, j] <- 0
+            } else { # i.e. i > j: lower-diagonal part, to be filled with SD values
+                for (k in 1:length(mmd_vect)) { 
+                    mmd_vect[k] <- sd_mmd(nA = mat_size[i,k], nB = mat_size[j,k]) 
+                }
+                mmd_matrix[i, j] <- sqrt(2*sum(mmd_vect)) / length(mmd_vect)
+            }          
+        } 
+    }
+    
+    ## 4. Other results:
+    mmd_sym <- mmd_matrix # mmd_sym: will be a symmetrical matrix filled with MMD values only
+    mmd_signif <- round(mmd_matrix,3) # mmd_signif: the matrix will contain the information about 'significant' MMD values
+    for (i in 1:nrow(mmd_matrix)) {
+        for (j in 1:ncol(mmd_matrix)) { # for each pair of traits,
+            if (i > j) {
+                mmd_sym[i, j] <- max(0, mmd_matrix[j, i]) # lower-diagonal part: replace SD by MMD (or 0 if the MMD value is negative)
+                mmd_signif[i, j] <- ifelse(mmd_matrix[j, i] > (2*mmd_matrix[i,j]), "*", "NS")
+            } else if (i == j) {
+                mmd_signif[i, j] <- NA
+            }
+            else {
+                mmd_sym[i, j] <- max(0, mmd_sym[i, j]) # upper-diagonal: already filled by MMDs, just replace by 0 if negative
+            }
+        }
+    }
 
-	# 3. APPLIQUER LA CORRECTION DE FT :
-	thetaDiff <- function(nA,pA,nB,pB) { (theta(nA,pA) - theta(nB,pB))^2 - (1/(nA+0.5) + 1/(nB+0.5)) }
-	
-	# 4. CONSTRUCTION DE LA MATRICE DE MMD :
-	MMDMatrix <- matrix(0, nrow=nrow(Mat_eff), ncol=nrow(Mat_eff)) # MMDMatrix a autant de lignes et de colonnes qu'on a de groupes dans les donnees
-	noms <- rownames(Mat_eff)
-	dimnames(MMDMatrix) <- list(substr(noms,3,nchar(noms)), substr(noms,3,nchar(noms))) # On nomme les lignes et colonnes selon les noms de groupes
-
-	for (i in 1:nrow(MMDMatrix)) {
- 		for (j in 1:ncol(MMDMatrix)) { # on parcourt les cases (i,j) de MMDMatrix pour la remplir
- 
-  			MMDVect <- vector("numeric", length(Mat_eff[1,])) 
-  			if (j > i) { # on est au-dessus de la diagonale du tableau : on remplit avec les valeurs MMD
-   				for (k in 1:length(MMDVect)) { 
-    					MMDVect[k] <- thetaDiff(Mat_eff[i,k], Mat_prop[i,k], Mat_eff[j,k], Mat_prop[j,k]) 
-   				}
-   				MMDMatrix[i, j] <- sum(MMDVect) / length(MMDVect) 
- 			} else if (i ==j) { # on est sur la diagonale du tableau
-   				MMDMatrix[i, j] <- 0 # on affecte donc une valeur nulle
-  			} else { # donc i > j, on est sous la diagonale et on affecte l'écart-type du MMD
-   				for (k in 1:length(MMDVect)) { 
-    					MMDVect[k] <- sdFormula(Mat_eff[i,k], Mat_eff[j,k]) 
-   				}
-   				MMDMatrix[i, j] <- sqrt(2*sum(MMDVect)) / length(MMDVect)
-  			}
-  
- 		} 
-	}
-	
-	# 5. AUTRES RESULTATS :
-	MMDSym <- MMDMatrix # matrice qui contiendra les valeurs de MMD (symetrique et a diagonale nulle)
-	MMDSignif <- round(MMDMatrix,3) # matrice qui contiendra l'info sur la significativite des MMD
-	for (i in 1:nrow(MMDMatrix)) {
- 		for (j in 1:ncol(MMDMatrix)) { # pour chaque paire de variables...
-  			if (i > j) {MMDSym[i,j] <- max(0,MMDMatrix[j,i]) ; MMDSignif[i,j] <- ifelse(MMDMatrix[j,i]>(2*MMDMatrix[i,j]), "*", "NS")}
-  			#else if(i < j) {MMDSignif[i,j] <- MMDMatrix[,j]}
-  			else if (i==j) {MMDSignif[i,j] <- NA}
-  			else {MMDSym[i,j] <- max(0,MMDSym[i,j])} # on remplace (ici et ci-dessus) les valeurs negatives de MMD par des 0.
- 		}
-	}
-
-	# 6. RETOURNER LES RESULTATS :
-	liste_resultats <- list(round(MMDMatrix,6), round(MMDSym,6), MMDSignif)
-	names(liste_resultats) <- c("MMDMatrix", "MMDSym", "MMDSignif")
-	return(liste_resultats)
+    ## 5. Return the results:
+    list_results <- list(round(mmd_matrix,6), round(mmd_sym,6), mmd_signif)
+    names(list_results) <- c("MMDMatrix", "MMDSym", "MMDSignif")
+    return(list_results)
 }
