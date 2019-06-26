@@ -2,7 +2,7 @@ shinyServer(function(input, output, session) {
 
     source("binary_to_table.R")
     source("calcIMD.R")	
-    source("calcMMD.R")
+    source("mmd.R")
     source("extractGroups.R")
     source("fisherTestTab.R")
     source("gphMDS.R")
@@ -66,7 +66,7 @@ shinyServer(function(input, output, session) {
     resultatsMMD <- reactive({ # même chose avec les résultats des MMD sur le jeu de données obtenu ci-dessus
         if (input$loadData>0 & exists("dat", envir=myenvg) & length(input$selectGroups)>1) { # si un jeu de données a bien été fourni et qu'il est valide !
             if (ncol(dat()$TableCalcMMD) > 1) { # et s'il reste encore des variables avec les critères de sélection definis !
-                calcMMD(dat()$TableCalcMMD, formule=input$formuleMMD)
+                mmd(dat()$TableCalcMMD, angular = input$formuleMMD)
             } else { 
                 return() 
             }
