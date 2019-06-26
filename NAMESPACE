@@ -1,3 +1,4 @@
+export("mmd")
 export("StartMMD")
 import(shiny)
 importFrom("scatterplot3d", "scatterplot3d")

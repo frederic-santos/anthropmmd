@@ -2,7 +2,6 @@ shinyServer(function(input, output, session) {
 
     source("binary_to_table.R")
     source("calcIMD.R")	
-    source("mmd.R")
     source("extractGroups.R")
     source("fisherTestTab.R")
     source("gphMDS.R")
