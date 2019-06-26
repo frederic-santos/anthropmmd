@@ -8,7 +8,7 @@ shinyServer(function(input, output, session) {
     source("gphMDS.R")
     source("max3.R")
     source("selectVars.R")
-    source("tableToFreq.R")
+    source("table_relfreq.R")
     source("validDataMMD.R")
     library(scatterplot3d)
     library(smacof)
@@ -41,7 +41,7 @@ shinyServer(function(input, output, session) {
                 if (input$typeData=="raw") { # si c'est un fichier de données brutes...
                     dat <- binary_to_table(dat) # on le convertit en table d'effectifs et fréquences
                 }
-                dat <- tableToFreq(dat)
+                dat <- table_relfreq(dat)
                 assign("dat", dat, envir=myenvg) # on place le jeu de données (qui est desormais forcement de type table) dans l'environnement global
             } else { # le fichier n'est pas valide
                 showModal(modalDialog(title = "Error", "Invalid file. Please check the field separator, and make sure that there are at least two individuals in each group. Please read the help page of 'StartMMD' for detailed information.", easyClose = TRUE))
