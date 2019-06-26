@@ -4,9 +4,9 @@ theta <- function(n, p, choice = c("Anscombe", "Freeman")) {
 ### choice: variant of angular transformation to be used
 
     if (choice == "Anscombe") {
-        return(asin((n/(n+3/4))*(1-2*p)))
+        return(asin((n/(n+3/4)) * (1-2*p)))
     } else { # Freeman-Tukey
-        return(0.5*(asin(1-(2*p*n/(n+1)))+asin(1-(2*((p*n)+1)/(n+1)))))
+        return(0.5 * ( asin(1-(2*p*n/(n+1))) + asin(1-(2*((p*n)+1)/(n+1))) ))
     }    
 }
 
@@ -20,5 +20,5 @@ compute_md <- function(nA, pA, nB, pB, choice = c("Anscombe", "Freeman")) {
 ### pA & pB: trait frequencies in the groups A et B
 ### choice: variant of angular transformation to be used    
 ### Computes the measure of divergence for one given trait
-    return((theta(nA, pA, choice = choice) - theta(nB, pB, choice = choice))^2 - sd_mmd(nA, nB))
+    return((theta(nA, pA, choice = choice) - theta(nB, pB, choice = choice))^2 - sqrt(sd_mmd(nA, nB)))
 }   
