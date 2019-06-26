@@ -18,7 +18,9 @@ binary_to_table(data, relative = FALSE)
     with \eqn{n} rows (one per individual) and \eqn{p+1} columns (one
     for each of the \eqn{p} traits, plus one column provided as a group
     indicator).}
-  \item{relative}{Boolean. Indicates if the last rows of the table must contain frequencies (i.e., number of individuals having a given trait) or relative frequencies (i.e., proportions).}
+  \item{relative}{Boolean. Indicates if the last rows of
+    the table must contain frequencies (i.e., number of individuals
+    having a given trait) or relative frequencies (i.e., proportions).}
 }
 \value{
   A matrix with \eqn{2*K} rows (\eqn{K} being the number of groups in
@@ -27,7 +29,10 @@ binary_to_table(data, relative = FALSE)
   trait frequencies.
 }
 \references{
-  Santos, F. (2018) AnthropMMD: an R package with a graphical user interface for the mean measure of divergence. \emph{American Journal of Physical Anthropology}, \bold{165}(1), 200--205. doi: 10.1002/ajpa.23336
+  Santos, F. (2018) AnthropMMD: an R package with a graphical user
+  interface for the mean measure of divergence. \emph{American Journal
+  of Physical Anthropology}, \bold{165}(1), 200--205. doi:
+  10.1002/ajpa.23336
 }
 \seealso{
   \eqn{StartMMD}

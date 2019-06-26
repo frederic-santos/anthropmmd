@@ -1,8 +1,12 @@
 \name{mmd}
 \alias{mmd}
-\title{Compute MMD values from a table of sample sizes and relative frequencies}
+\title{
+  Compute MMD values from a table of sample sizes and relative
+  frequencies
+}
 \description{
-  Full description later.
+  Compute various MMD results, typically using a table returned by the
+  function \code{\link{binary_to_table(relative=TRUE)}}.
 }
 \usage{
 mmd(data, angular = c("Anscombe", "Freeman"))
