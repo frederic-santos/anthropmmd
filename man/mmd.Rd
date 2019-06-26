@@ -6,7 +6,8 @@
 }
 \description{
   Compute various MMD results, typically using a table returned by the
-  function \code{\link{binary_to_table(relative=TRUE)}}.
+  function \code{\link{binary_to_table}} with the argument
+  \code{relative = TRUE}.
 }
 \usage{
 mmd(data, angular = c("Anscombe", "Freeman"))
