@@ -7,8 +7,6 @@ shinyServer(function(input, output, session) {
     source("max3.R")
     source("select_vars.R")
     source("validDataMMD.R")
-    library(scatterplot3d)
-    library(smacof)
     
     myenvg = new.env() # environnement privé au package ; contiendra le jeu de données (vu comme une variable globale)
 
