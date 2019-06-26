@@ -7,7 +7,7 @@ Authors@R: c(person(given="Frédéric", family="Santos", role=c("aut", "cre"), e
 Depends: R (>= 3.5.0)
 Imports: scatterplot3d, shiny, smacof
 Suggests: testthat (>= 2.1.0)
-License: GPL-3 | file LICENSE
+License: CeCILL-2 | file LICENSE
 Encoding: UTF-8
 URL: https://gitlab.com/f.santos/anthropmmd/
 BugReports: https://gitlab.com/f.santos/anthropmmd/issues/new
