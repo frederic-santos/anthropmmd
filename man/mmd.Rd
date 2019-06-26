@@ -1,0 +1,39 @@
+\name{mmd}
+\alias{mmd}
+\title{Compute MMD values from a table of sample sizes and relative frequencies}
+\description{
+  Full description later.
+}
+\usage{
+mmd(data, angular = c("Anscombe", "Freeman"))
+}
+\arguments{
+  \item{data}{A table of sample sizes and frequencies}
+  \item{angular}{Choice of a formula for angular transformation: either
+    Anscombe or Freeman-Tukey transformation.}
+}
+\value{A list with three elements:
+  \item{MMDMatrix}{Following the presentation adopted in many research
+    articles, a matrix filled with MMD values above the diagonal, and
+    standard deviations of MMD below the diagonal.}
+  \item{MMDSym}{A symmetrical matrix of MMD values, where negative
+    values are replaced by zeroes.}
+  \item{MMDSignif}{A matrix where any pair of traits having a
+    significant MMD value is indicated by a star, \sQuote{*}.}
+}
+\references{
+  Harris, E. F. and Sjøvold, T. (2004) Calculation of Smith's mean
+  measure of divergence for intergroup comparisons using nonmetric
+  data. \emph{Dental Anthropology}, \bold{17}(3), 83--93.
+
+  Nikita, E. (2015) A critical review of the mean measure of divergence and Mahalanobis distances using artificial data and new approaches to the estimation of biodistances employing nonmetric traits. \emph{American Journal of Physical Anthropology}, \bold{157}, 284--294. doi: 10.1002/ajpa.22708
+}
+\seealso{
+  \code{\link{StartMMD}}
+}
+\examples{
+data(toyMMD)
+head(toyMMD)
+# to be continued...
+}
+\author{Frédéric Santos, \email{frederic.santos@u-bordeaux.fr}}
