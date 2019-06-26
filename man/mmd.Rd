@@ -43,8 +43,10 @@ head(toyMMD)
 # frequencies:
 tab <- binary_to_table(toyMMD, relative = TRUE)
 tab
-# Compute and display MMD values:
+# Compute and display a symmetrical matrix of MMD values:
 mmd.out <- mmd(tab, angular = "Anscombe")
 mmd.out$MMDSym
+# Significant MMD values are indicated by a star:
+mmd.out$MMDSignif
 }
 \author{Frédéric Santos, \email{frederic.santos@u-bordeaux.fr}}
