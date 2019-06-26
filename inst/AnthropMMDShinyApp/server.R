@@ -7,7 +7,7 @@ shinyServer(function(input, output, session) {
     source("fisherTestTab.R")
     source("gphMDS.R")
     source("max3.R")
-    source("selectVars.R")
+    source("select_vars.R")
     source("table_relfreq.R")
     source("validDataMMD.R")
     library(scatterplot3d)
@@ -57,7 +57,7 @@ shinyServer(function(input, output, session) {
     
     dat <- reactive({ # ici, on insère une expression qui retournera en temps réel le jeu de données correspondant aux choix de filtrage de l'utilisateur
         if (input$loadData>0 & exists("dat", envir=myenvg) & length(input$selectGroups)>1) { # si un jeu de données a bien été fourni et qu'il est valide !
-            selectVars(get("dat", envir=myenvg), k=as.numeric(input$minNbInd), excludeTraits=as.character(input$exclusionStrategy), groups=as.character(input$selectGroups), formule=as.character(input$formuleMMD), OMDvalue=input$OMDvalue)
+            select_vars(get("dat", envir=myenvg), k=as.numeric(input$minNbInd), excludeTraits=as.character(input$exclusionStrategy), groups=as.character(input$selectGroups), formule=as.character(input$formuleMMD), OMDvalue=input$OMDvalue)
         } else { # sinon, s'il n'y a pas de données ou qu'elles sont non-valides,
             return() # on n'affiche rien pour l'instant (évite l'affichage d'erreurs en rouge ou de "résultats vides" en l'absence de fichier correct)
         }
@@ -77,7 +77,7 @@ shinyServer(function(input, output, session) {
     
     temp <- reactive({ # sera comme dat(), sauf qu'on ne filtre pas en fonction du nb d'individus, on filtre juste en fonction des variables
         if (input$loadData>0 & exists("dat", envir=myenvg) & length(input$selectGroups)>1) { # si un jeu de données a bien été fourni et qu'il est valide !
-            tempo <- selectVars(get("dat", envir=myenvg), k=1, excludeTraits=as.character(input$exclusionStrategy), groups=as.character(input$selectGroups), formule=as.character(input$formuleMMD), OMDvalue=input$OMDvalue)
+            tempo <- select_vars(get("dat", envir=myenvg), k=1, excludeTraits=as.character(input$exclusionStrategy), groups=as.character(input$selectGroups), formule=as.character(input$formuleMMD), OMDvalue=input$OMDvalue)
             if (ncol(as.data.frame(tempo$TableCalcMMD))<2) {
                 showModal(modalDialog(title="Error", "With the current settings for trait sélection, there is less than two traits suitable for the analysis. Consequently, the MMD will not be calculated. Please change the strategy for trait sélection, or exclude some groups (with very few individuals) from the analysis.", easyClose=FALSE))
                 return()
@@ -128,7 +128,7 @@ shinyServer(function(input, output, session) {
     
     tablePvaleurs <- reactive({
         if (input$loadData>0 & exists("dat", envir=myenvg) & length(input$selectGroups)>1 & input$exclusionStrategy=="keepFisher") {
-            dataTemp <- selectVars(get("dat", envir=myenvg), k=as.numeric(input$minNbInd), excludeTraits="none", groups=as.character(input$selectGroups), formule=as.character(input$formuleMMD), OMDvalue=input$OMDvalue)$TableCalcMMD
+            dataTemp <- select_vars(get("dat", envir=myenvg), k=as.numeric(input$minNbInd), excludeTraits="none", groups=as.character(input$selectGroups), formule=as.character(input$formuleMMD), OMDvalue=input$OMDvalue)$TableCalcMMD
             return(fisherTestTab(dataTemp)$pval)
         } else {
             return()
@@ -146,7 +146,7 @@ shinyServer(function(input, output, session) {
     })
     
     output$download_pval <- downloadHandler(filename='pairwise_fisher_tests_pvalues.csv', content=function(file) {
-        dataTemp <- selectVars(get("dat", envir=myenvg), k=as.numeric(input$minNbInd), excludeTraits="none", groups=as.character(input$selectGroups), formule=as.character(input$formuleMMD), OMDvalue=input$OMDvalue)$TableCalcMMD
+        dataTemp <- select_vars(get("dat", envir=myenvg), k=as.numeric(input$minNbInd), excludeTraits="none", groups=as.character(input$selectGroups), formule=as.character(input$formuleMMD), OMDvalue=input$OMDvalue)$TableCalcMMD
         write.csv(fisherTestTab(dataTemp)$pval, file)
     }) #
     
