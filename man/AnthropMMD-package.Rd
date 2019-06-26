@@ -4,7 +4,7 @@
 \docType{package}
 
 \title{
-  An R-Shiny Application for Smith's Mean Measure of Divergence (MMD)
+  An R package for Smith's Mean Measure of Divergence (MMD)
 }
 
 \description{
