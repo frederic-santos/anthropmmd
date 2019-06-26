@@ -1,4 +1,4 @@
-mmd <- function(data, angular = c("Anscombe", "Freeman") {
+mmd <- function(data, angular = c("Anscombe", "Freeman")) {
 ### data: table of group sample sizes and frequencies, such as returned by the function table_relfreq
 ### angular: choice of a formula for angular transformation
 
