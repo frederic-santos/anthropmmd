@@ -230,9 +230,9 @@ server <- shinyServer(function(input, output, session) {
         if (input$loadData>0 & exists("dat", envir=myenvg) & length(input$selectGroups)>2 ) { 
             mmdval <- resultatsMMD()$MMDSym
             mmdtoy <- mmdval; diag(mmdtoy) <- rep(1, nrow(mmdtoy))
-            if (input$methodMDS=="MMDS") {
+            if (input$methodMDS=="classical") {
                 coor <- cmdscale(mmdval, k=2)
-            } else if (input$methodMDS!="MMDS" & all(mmdtoy>0)) {
+            } else if (input$methodMDS!="classical" & all(mmdtoy>0)) {
                 coor <- smacofSym(as.dist(mmdval), type=input$methodMDS)$conf
             } else {
                 return()
