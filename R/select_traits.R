@@ -1,9 +1,9 @@
-select_traits <- function(tab, k = 10, excludeTraits = c("none", "excludeNPT", "excludeQNPT", "excludeNCT"), OMDvalue = NULL, groups, formule = c("Anscombe", "Freeman")) {
+select_traits <- function(tab, k = 10, strategy = c("none", "excludeNPT", "excludeQNPT", "excludeNOMD", "keepFisher"), OMDvalue = NULL, groups, angular = c("Anscombe", "Freeman")) {
 ### tab: table of sample sizes and frequencies
 ### k: numeric value, required minimal number of individuals per group
-### excludeTraits: scheme of exclusion of non-polymorphic traits
+### strategy: scheme of exclusion of non-polymorphic traits
 ### groups: a factor or character vector, indicating the group to be considered in the analysis
-### formule: angular transformation to be used in MMD formula
+### angular: angular transformation to be used in MMD formula
     
 #############################################################
 ### 1. Select a subset of the dataset according to the groups
@@ -11,7 +11,7 @@ select_traits <- function(tab, k = 10, excludeTraits = c("none", "excludeNPT", "
     groupeOK <- substr(rownames(tab), 3, nchar(rownames(tab))) %in% as.character(groups) # boolean, indicated whether each group is to be considered or not
     groupeOK[(nrow(tab)/2 + 1):nrow(tab)] <- groupeOK[1:(nrow(tab)/2)]
     tab <- tab[groupeOK, ]
-    nbGroupes <- nrow(tab)/2 # *final* number of groups after subsetting
+    nbGroupes <- nrow(tab) / 2 # *final* number of groups after subsetting
 
 ###############################################################################################
 ### 2. Filter the dataset to keep only the traits having at least 'k' individuals in each group
@@ -32,8 +32,8 @@ select_traits <- function(tab, k = 10, excludeTraits = c("none", "excludeNPT", "
 
 ####################################################################
 ### 3. Addtional step to discard the traits with too few variability
-    IMDs <- calcIMD(tab = tab, formule = formule, OMDvalue = OMDvalue)
-    if (excludeTraits == "excludeNPT") { # Scheme of exclusion: exclude non-polymorphic traits
+    IMDs <- calcIMD(tab = tab, formule = angular, OMDvalue = OMDvalue)
+    if (strategy == "excludeNPT") { # Scheme of exclusion: exclude non-polymorphic traits
         polym <- rep(NA, ncol(tab))
         for (j in 1:ncol(tab)) {
             polym[j] <- ifelse(all(tab[(nbGroupes+1):nrow(tab), j] == 0) | all(tab[(nbGroupes+1):nrow(tab), j] == 1), FALSE, TRUE) # TRUE iff the trait has two levels
@@ -41,7 +41,7 @@ select_traits <- function(tab, k = 10, excludeTraits = c("none", "excludeNPT", "
         tab <- tab[ , polym] # keep polymorphic traits only
         tabDisplay <- IMDs$Sorted[rownames(IMDs$Sorted) %in% colnames(tab), ]
     } 
-    else if (excludeTraits=="excludeQNPT") { # Scheme of exclusion: "quasi-non-polymorphic" traits
+    else if (strategy=="excludeQNPT") { # Scheme of exclusion: "quasi-non-polymorphic" traits
         avirer <- rep(NA, ncol(tab))
         for (j in 1:ncol(tab)) {
             tabprov <- round(tab[1:nbGroupes, j] * tab[(nbGroupes+1):nrow(tab), j],1)
@@ -51,11 +51,11 @@ select_traits <- function(tab, k = 10, excludeTraits = c("none", "excludeNPT", "
         tab <- tab[ , avirer]
         tabDisplay <- IMDs$Sorted[rownames(IMDs$Sorted) %in% colnames(tab), ]
     } 
-    else if (excludeTraits=="excludeNOMD") { # Scheme of exclusion: weak contribution to MMD
+    else if (strategy=="excludeNOMD") { # Scheme of exclusion: weak contribution to MMD
         tab <- tab[ , rownames(IMDs$Pos)]
         tabDisplay <- IMDs$SortedPos
     } 
-    else if (excludeTraits=="keepFisher") { # Scheme of exclusion: keep only those traits that show significant differencies between groups at Fisher's exact test
+    else if (strategy=="keepFisher") { # Scheme of exclusion: keep only those traits that show significant differencies between groups at Fisher's exact test
         tab <- fisherTestTab(tab)$informative
         tabDisplay <- IMDs$Sorted[rownames(IMDs$Sorted) %in% colnames(tab), ]
         
@@ -67,6 +67,5 @@ select_traits <- function(tab, k = 10, excludeTraits = c("none", "excludeNPT", "
 ### 4. Return the results
     tabDisplay <- as.matrix(tabDisplay)
     colnames(tabDisplay) <- "Overall MD"
-    return(list("TableCalcMMD" = tab, "TableDisplayIMD" = tabDisplay))
-    
+    return(list("filtered" = tab, "OMD" = tabDisplay))
 }

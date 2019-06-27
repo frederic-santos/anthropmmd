@@ -44,7 +44,7 @@ server <- shinyServer(function(input, output, session) {
     
     dat <- reactive({ # ici, on insère une expression qui retournera en temps réel le jeu de données correspondant aux choix de filtrage de l'utilisateur
         if (input$loadData>0 & exists("dat", envir=myenvg) & length(input$selectGroups)>1) { # si un jeu de données a bien été fourni et qu'il est valide !
-            select_traits(get("dat", envir=myenvg), k=as.numeric(input$minNbInd), excludeTraits=as.character(input$exclusionStrategy), groups=as.character(input$selectGroups), formule=as.character(input$formuleMMD), OMDvalue=input$OMDvalue)
+            select_traits(get("dat", envir=myenvg), k=as.numeric(input$minNbInd), strategy=as.character(input$exclusionStrategy), groups=as.character(input$selectGroups), angular=as.character(input$formuleMMD), OMDvalue=input$OMDvalue)
         } else { # sinon, s'il n'y a pas de données ou qu'elles sont non-valides,
             return() # on n'affiche rien pour l'instant (évite l'affichage d'erreurs en rouge ou de "résultats vides" en l'absence de fichier correct)
         }
@@ -52,8 +52,8 @@ server <- shinyServer(function(input, output, session) {
     
     resultatsMMD <- reactive({ # même chose avec les résultats des MMD sur le jeu de données obtenu ci-dessus
         if (input$loadData>0 & exists("dat", envir=myenvg) & length(input$selectGroups)>1) { # si un jeu de données a bien été fourni et qu'il est valide !
-            if (ncol(dat()$TableCalcMMD) > 1) { # et s'il reste encore des variables avec les critères de sélection definis !
-                mmd(dat()$TableCalcMMD, angular = input$formuleMMD)
+            if (ncol(dat()$filtered) > 1) { # et s'il reste encore des variables avec les critères de sélection definis !
+                mmd(dat()$filtered, angular = input$formuleMMD)
             } else { 
                 return() 
             }
@@ -64,8 +64,8 @@ server <- shinyServer(function(input, output, session) {
     
     temp <- reactive({ # sera comme dat(), sauf qu'on ne filtre pas en fonction du nb d'individus, on filtre juste en fonction des variables
         if (input$loadData>0 & exists("dat", envir=myenvg) & length(input$selectGroups)>1) { # si un jeu de données a bien été fourni et qu'il est valide !
-            tempo <- select_traits(get("dat", envir=myenvg), k=1, excludeTraits=as.character(input$exclusionStrategy), groups=as.character(input$selectGroups), formule=as.character(input$formuleMMD), OMDvalue=input$OMDvalue)
-            if (ncol(as.data.frame(tempo$TableCalcMMD))<2) {
+            tempo <- select_traits(get("dat", envir=myenvg), k=1, strategy=as.character(input$exclusionStrategy), groups=as.character(input$selectGroups), angular=as.character(input$formuleMMD), OMDvalue=input$OMDvalue)
+            if (ncol(as.data.frame(tempo$filtered))<2) {
                 showModal(modalDialog(title="Error", "With the current settings for trait sélection, there is less than two traits suitable for the analysis. Consequently, the MMD will not be calculated. Please change the strategy for trait sélection, or exclude some groups (with very few individuals) from the analysis.", easyClose=FALSE))
                 return()
             } else {
@@ -79,7 +79,7 @@ server <- shinyServer(function(input, output, session) {
                                         # Mise à jour de la réglette :
     calcNbMaxReglette <- reactive({ # sert à calculer dynamiquement la borne max de la réglette *en fonction des groupes en presence* ! (ce nb peut changer en fonction des groupes actifs)
         if (input$loadData>0 & exists("dat", envir=myenvg) & length(input$selectGroups)>1) { # si un jeu de données a bien été chargé...
-            max3(temp()$TableCalcMMD)
+            max3(temp()$filtered)
         } else { # sinon, par défaut,
             return(100) # la valeur maximale est fixée à 100.
         }
@@ -91,7 +91,7 @@ server <- shinyServer(function(input, output, session) {
     
 ######################################################################
 ### 2.1. Remplir l'onglet "Summary" avec la table des données filtrees
-    output$tableResume <- renderTable(dat()$TableCalcMMD, rownames=TRUE, digits=3)
+    output$tableResume <- renderTable(dat()$filtered, rownames=TRUE, digits=3)
                                         # explication (pour rappel) : cette sortie est cachée tant que le fichier n'est pas chargé (grâce a l'expression réactive ci-dessus)
 
     output$button_download_summary <- renderUI({  # ce bouton n'est generé que lorsque l'utilisateur a uploadé les données et lancé le calcul 
@@ -102,7 +102,7 @@ server <- shinyServer(function(input, output, session) {
         }
     })
     output$download_summary <- downloadHandler(filename='summary_active_groups.csv', content=function(file) {
-        write.csv(dat()$TableCalcMMD, file)
+        write.csv(dat()$filtered, file)
     }) # la fonction déclenchée par le bouton de téléchargement
 
     output$text_title_pvalFisher <- reactive({
@@ -115,7 +115,7 @@ server <- shinyServer(function(input, output, session) {
     
     tablePvaleurs <- reactive({
         if (input$loadData>0 & exists("dat", envir=myenvg) & length(input$selectGroups)>1 & input$exclusionStrategy=="keepFisher") {
-            dataTemp <- select_traits(get("dat", envir=myenvg), k=as.numeric(input$minNbInd), excludeTraits="none", groups=as.character(input$selectGroups), formule=as.character(input$formuleMMD), OMDvalue=input$OMDvalue)$TableCalcMMD
+            dataTemp <- select_traits(get("dat", envir=myenvg), k=as.numeric(input$minNbInd), strategy="none", groups=as.character(input$selectGroups), angular=as.character(input$formuleMMD), OMDvalue=input$OMDvalue)$filtered
             return(fisherTestTab(dataTemp)$pval)
         } else {
             return()
@@ -133,7 +133,7 @@ server <- shinyServer(function(input, output, session) {
     })
     
     output$download_pval <- downloadHandler(filename='pairwise_fisher_tests_pvalues.csv', content=function(file) {
-        dataTemp <- select_traits(get("dat", envir=myenvg), k=as.numeric(input$minNbInd), excludeTraits="none", groups=as.character(input$selectGroups), formule=as.character(input$formuleMMD), OMDvalue=input$OMDvalue)$TableCalcMMD
+        dataTemp <- select_traits(get("dat", envir=myenvg), k=as.numeric(input$minNbInd), strategy="none", groups=as.character(input$selectGroups), angular=as.character(input$formuleMMD), OMDvalue=input$OMDvalue)$filtered
         write.csv(fisherTestTab(dataTemp)$pval, file)
     }) #
     
@@ -154,7 +154,7 @@ server <- shinyServer(function(input, output, session) {
     }) # la fonction déclenchée par le bouton de téléchargement
 
     ## 2.2-b) Matrice des mesures individuelles de divergence :
-    output$tableIMD <- renderTable(dat()$TableDisplayIMD, rownames=TRUE, digits=3)
+    output$tableIMD <- renderTable(dat()$OMD, rownames=TRUE, digits=3)
     
     output$button_download_tableIMD <- renderUI({  # ce bouton n'est generé que lorsque l'utilisateur a uploadé les données et lancé le calcul 
         if (input$loadData>0 & exists("dat", envir=myenvg) & length(input$selectGroups)>1) { 
@@ -164,7 +164,7 @@ server <- shinyServer(function(input, output, session) {
         }
     })
     output$download_tableIMD <- downloadHandler(filename='Overall_MD_matrix.csv', content=function(file) {
-        write.csv(dat()$TableDisplayIMD, file)
+        write.csv(dat()$OMD, file)
     }) # la fonction déclenchée par le bouton de téléchargement
 
     ## 2.2-c) Matrice symetrique de MMD :

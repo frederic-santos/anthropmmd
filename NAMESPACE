@@ -1,5 +1,6 @@
 export("binary_to_table")
 export("mmd")
+export("select_traits")
 export("StartMMD")
 export("table_relfreq")
 import(shiny)
