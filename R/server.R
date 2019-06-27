@@ -220,7 +220,7 @@ server <- shinyServer(function(input, output, session) {
     
     output$plotMDS <- renderPlot({
         if (input$loadData>0 & exists("dat", envir=myenvg) & length(input$selectGroups)>2) { # si un jeu de données valide a bien été fourni et qu'on a au moins 3 groupes !
-            gphMDS(mmdval=resultatsMMD()$MMDSym, methodMDS=input$methodMDS, displayAxes=input$axesMDSplot, displayGOF=input$checkboxGOFstats, dim=input$MDSdim, asp=input$aspMDSplot)
+            plot_mmd(data = resultatsMMD()$MMDSym, method = input$methodMDS, axes = input$axesMDSplot, gof = input$checkboxGOFstats, dim = input$MDSdim, asp = input$aspMDSplot)
         } else { # sinon, s'il n'y a pas de données ou qu'elles sont non-valides,
             return() # on n'affiche rien pour l'instant.
         }
@@ -250,7 +250,7 @@ server <- shinyServer(function(input, output, session) {
     output$download_plotMDS <- downloadHandler(filename='MDS_plot.png', content=function(file) { # la fonction déclenchée par le bouton de téléchargement
         png(file, width=800, height=800)
         par(cex=1.16)
-        gphMDS(mmdval=resultatsMMD()$MMDSym, methodMDS=input$methodMDS, displayAxes=input$axesMDSplot, displayGOF=input$checkboxGOFstats, dim=input$MDSdim, asp=input$aspMDSplot)
+        plot_mmd(data = resultatsMMD()$MMDSym, method = input$methodMDS, axes = input$axesMDSplot, gof = input$checkboxGOFstats, dim = input$MDSdim, asp = input$aspMDSplot)
         dev.off()
     })
     
