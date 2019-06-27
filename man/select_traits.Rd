@@ -34,7 +34,8 @@ angular = c("Anscombe", "Freeman"))
     facilitate the trait selection via the argument
     \code{k}. (Otherwise, almost all traits would be removed.)}
   \item{angular}{Formula for angular transformation, see Harris and
-    Sjøvold (2004).}
+    Sjøvold (2004). Useful only for the calculation of overall measure
+    of divergence.}
 }
 \value{
   A list with two components:
@@ -57,5 +58,23 @@ angular = c("Anscombe", "Freeman"))
   \code{\link{StartMMD}}
 }
 \examples{
+# Load and visualize a binary dataset:
+data(toyMMD)
+head(toyMMD)
+# Convert this dataframe into a table of sample sizes and
+# relative frequencies:
+tab <- binary_to_table(toyMMD, relative = TRUE)
+tab
+
+# Filter this dataset to keep only those traits that have at
+# least k=10 individuals in each group:
+select_traits(tab, k = 10)
+# Only Trait1 is excluded.
+
+# Filter this dataset to keep only those traits that have at
+# least k=11 individuals in each group, and show significant
+# differences at Fisher's exact test:
+select_traits(tab, k = 11, strategy = "keepFisher")
+# Traits 1, 5 and 8 are excluded.
 }
 \author{Frédéric Santos, \email{frederic.santos@u-bordeaux.fr}}
