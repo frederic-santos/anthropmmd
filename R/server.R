@@ -1,22 +1,22 @@
 server <- shinyServer(function(input, output, session) {
  
-    myenvg = new.env() # environnement privé au package ; contiendra le jeu de données (vu comme une variable globale)
+    myenvg = new.env() # package environement, will contain the dataset (seen as a global variable)
 
-###########################################################
-### 1. CHARGER LE JEU DE DONNÉES FOURNI PAR L'UTILISATEUR #
-###########################################################
+    ## #############################################
+    ## 1. Read the dataset imported through the UI #
+    ## #############################################
     observeEvent(input$loadData, {
-        if (! is.null(input$file$name)) { # on vérifie que l'utilisateur a bien choisi un fichier !
-            if (input$typeData=="raw") { # si c'est un jeu de données brutes, binaires
+        if (! is.null(input$file$name)) { # check that the user has indeed loaded a file!
+            if (input$typeData=="raw") { # this dataset is a binary dataset
                 dat <- read.table(input$file$datapath, header=input$colNamesRaw, sep=input$fieldSepRaw, na.strings=input$charNA)
-                if (input$rowNames) { # s'il y a les noms d'individus...
-                    dat[,1] <- NULL # on les supprime (ils ne servent à rien ici)
+                if (input$rowNames) { # if the dataset includes row names, then remove them (they are useless in the MMD workflow)
+                    dat[,1] <- NULL
                 }		
-                dat[,1] <- factor(dat[,1]) # au cas où l'utilisateur aurait juste mis "1", "2", etc., comme noms de groupes, ce ne serait pas reconnu comme facteur. On corrige ça ici.
-            } else if (input$typeData=="table") { # si c'est une table d'effectifs et fréquences
+                dat[,1] <- factor(dat[,1]) # to be sure that the first column (group indicator) will be recognized as a factor, even if the labels are numeric ('1', '2', etc.)
+            } else if (input$typeData=="table") { # this dataset is already a table of frequencies
                 dat <- read.table(input$file$datapath, header=input$colNamesTable, row.names=1, sep=input$fieldSepTable)
             }
-            if (validDataMMD(dat, type=input$typeData)) { # on regarde si le fichier est bien valide
+            if (validDataMMD(dat, type=input$typeData)) { # quick checks: is it a valid data file?
                 groups <- extractGroups(dat, type=input$typeData) # on extrait les groups presents dans les données
                 updateSelectizeInput(session, "selectGroups", choices=groups, selected=groups, server=TRUE) # et on met a jour la liste de sélection des groupes...
                 updateNumericInput(session, "MDSdim", value=2, min=2, max=ifelse(length(groups)>3,3,2)) # ... ainsi que la dimension max admissible pour les MDS
