@@ -24,12 +24,11 @@ compute_md <- function(nA, pA, nB, pB, choice = c("Anscombe", "Freeman")) {
     return((theta(nA, pA, choice = choice) - theta(nB, pB, choice = choice))^2 - sqrt(sd_mmd(nA, nB)))
 }   
 
-mds_rho <- function(mmd, coor, k) {
+mds_rho <- function(mmd, coor) {
 ### Computes the rho values displayed on MDS plots
 ### mmd: symmetrical matrix of MMD values
 ### coor: MDS coordinates
-### k: dimension (2 or 3, for 2D or 3D plots)
-    mds_distances <- dist(coor[ , 1:k], diag = FALSE, upper = FALSE) # compute pairwise distances between all individuals on the MDS plot
+    mds_distances <- dist(coor[ , 1:ncol(coor)], diag = FALSE, upper = FALSE) # compute pairwise distances between all individuals on the MDS plot
     mmd_distances <- as.dist(mmd, diag = FALSE, upper = FALSE) # MMD dissimilarities
     ## Compute correlation between "real" (MMD) distances, and the distances post-MDS, not taking into account the null diagonal:
     rho <- cor(as.vector(as.matrix(mmd_distances)), as.vector(as.matrix(mds_distances)), method = "spearman")

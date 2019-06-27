@@ -20,7 +20,7 @@ plot_mmd <- function(data, method = c("classical", "interval", "ratio", "ordinal
         if (gof == TRUE) {
             legend.gof <- "Eigenvalue-based GoF="
             gof.value <- round(res.mds$GOF[1], 3)
-            rho.value <- mds_rho(mmd = data, coor = coor, k = dim)
+            rho.value <- mds_rho(mmd = data, coor = coor)
         }
     } else {
         ## Option B: MDS via SMACOF package
@@ -31,7 +31,7 @@ plot_mmd <- function(data, method = c("classical", "interval", "ratio", "ordinal
         if (gof == TRUE) {
             legend.gof <- "Stress="
             gof.value <- round(res.mds$stress, 3)
-            rho.value <- mds_rho(mmd = data, coor = coor, k = dim)
+            rho.value <- mds_rho(mmd = data, coor = coor)
         }
     }
 
