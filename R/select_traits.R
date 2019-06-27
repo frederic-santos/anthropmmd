@@ -1,13 +1,20 @@
-select_traits <- function(tab, k = 10, strategy = c("none", "excludeNPT", "excludeQNPT", "excludeNOMD", "keepFisher"), OMDvalue = NULL, groups, angular = c("Anscombe", "Freeman")) {
+select_traits <- function(tab, k = 10, strategy = c("none", "excludeNPT", "excludeQNPT", "excludeNOMD", "keepFisher"), OMDvalue = NULL, groups = NULL, angular = c("Anscombe", "Freeman")) {
 ### tab: table of sample sizes and frequencies
 ### k: numeric value, required minimal number of individuals per group
 ### strategy: scheme of exclusion of non-polymorphic traits
 ### groups: a factor or character vector, indicating the group to be considered in the analysis
 ### angular: angular transformation to be used in MMD formula
+
+    strategy <- match.arg(strategy) # to avoid a warning if the user do not specify anything
+    angular <- match.arg(angular) # idem
     
 #############################################################
 ### 1. Select a subset of the dataset according to the groups
     nbGroupes <- nrow(tab) / 2 # *initial* number of groups
+    if (is.null(groups)) { # if the user did not specify any group, take all of them
+        etiquettes <- rownames(tab)[1:nbGroupes]
+        groups <- factor(substr(etiquettes, 3, nchar(etiquettes)))
+    }
     groupeOK <- substr(rownames(tab), 3, nchar(rownames(tab))) %in% as.character(groups) # boolean, indicated whether each group is to be considered or not
     groupeOK[(nrow(tab)/2 + 1):nrow(tab)] <- groupeOK[1:(nrow(tab)/2)]
     tab <- tab[groupeOK, ]
