@@ -140,7 +140,7 @@ ui <- shinyUI(fluidPage(theme="style/kappa.css", # prefix 'style' to locate the 
           fluidRow(
             column(6,
               numericInput("MDSdim", label="Maximum dimension of the space", value=2, step=1, min=2, max=3),
-              selectInput("methodMDS", label="MDS method", choices=list("Classical metric MDS (a.k.a. PCoA)"="MMDS", "SMACOF, interval type"="interval", "SMACOF, ratio type"="ratio", "SMACOF, ordinal (nonmetric) MDS"="ordinal"), selected="MMDS", multiple=FALSE)
+              selectInput("methodMDS", label="MDS method", choices=list("Classical metric MDS (a.k.a. PCoA)"="classical", "SMACOF, interval type"="interval", "SMACOF, ratio type"="ratio", "SMACOF, ordinal (nonmetric) MDS"="ordinal"), selected="MMDS", multiple=FALSE)
             ),
             column(6,
               strong("Graph options"),
