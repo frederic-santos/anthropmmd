@@ -7,6 +7,7 @@ plot_mmd <- function(data, method = c("classical", "interval", "ratio", "ordinal
 ### asp: boolean, TRUE passes "asp=1" to plot function.
 
     aspValue <- ifelse(asp == TRUE, 1, NA) # 'translate' asp parameter as required by plot function
+    method <- match.arg(method) # to avoid a warning with the default value
     
     if (method == "classical") { 
 ##################################
