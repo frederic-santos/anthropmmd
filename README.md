@@ -1,9 +1,11 @@
 AnthropMMD 
 ==========
 
-## Installation of the R-package AnthropMMD using *devtools*
+## Installation of the R package AnthropMMD using *devtools*
 
 ### Install prerequisites
+
+Make sure that R >= 3.5.0 is installed. Then:
 
 1. Install *devtools* by typing the following command line into the R console:
 
@@ -27,15 +29,15 @@ To start the graphical interface, run the following commands into the R console:
 	library(AnthropMMD)
 	StartMMD()
 	
-## Installation of the R-package AnthropMMD from CRAN
+## Installation of AnthropMMD from CRAN
 
 The latest stable version of AnthropMMD is also available on CRAN, and can be installed by typing the following command line into the R console:
 
-	install.packages("AnthropMMD", dep=TRUE)
+	install.packages("AnthropMMD", dep = TRUE)
 
 ## Citing AnthropMMD
 
-The users of AnthropMMD that are willing to cite the package in a scientific article can find citation information by typing:
+To cite the package in a scientific article, citation information can be found by typing:
 
 	citation("AnthropMMD")
 
