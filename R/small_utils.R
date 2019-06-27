@@ -32,6 +32,6 @@ mds_rho <- function(mmd, coor, k) {
     mds_distances <- dist(coor[ , 1:k], diag = FALSE, upper = FALSE) # compute pairwise distances between all individuals on the MDS plot
     mmd_distances <- as.dist(mmd, diag = FALSE, upper = FALSE) # MMD dissimilarities
     ## Compute correlation between "real" (MMD) distances, and the distances post-MDS, not taking into account the null diagonal:
-    rho <- cor(as.vector(as.matrix(mmdDistances)), as.vector(as.matrix(mdsDistances)), method = "spearman")
+    rho <- cor(as.vector(as.matrix(mmd_distances)), as.vector(as.matrix(mds_distances)), method = "spearman")
     return(round(rho, 3))
 }
