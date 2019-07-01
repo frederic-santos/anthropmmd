@@ -22,7 +22,7 @@ testing:
     when: on_success
     script:
         - Rscript -e 'install.packages("DT")'
-	- Rscript -e 'covr::gitlab(quiet = FALSE)'
+        - Rscript -e 'covr::gitlab(quiet = FALSE)'
     artifacts:
         paths:
             - public
