@@ -11,8 +11,12 @@ server <- shinyServer(function(input, output, session) {
                 dat <- read.table(input$file$datapath, header = input$colNamesRaw, sep = input$fieldSepRaw, na.strings = input$charNA)
                 if (input$rowNames) { # if the dataset includes row names, then remove them (they are useless in the MMD workflow)
                     dat[ , 1] <- NULL
-                }		
-                dat[ , 1] <- factor(dat[ , 1]) # to be sure that the first column (group indicator) will be recognized as a factor, even if the labels are numeric ('1', '2', etc.)
+                }
+		if (ncol(dat) > 2) {
+                    dat[ , 1] <- factor(dat[ , 1]) # to be sure that the first column (group indicator) will be recognized as a factor, even if the labels are numeric ('1', '2', etc.)
+                } else {
+                    showModal(modalDialog(title = "Error", "Invalid file or invalid settings: less than two columns could be found in the data file. Please check the field separator.", easyClose = TRUE))
+                }
             } else if (input$typeData == "table") { # this dataset is already a table of frequencies
                 dat <- read.table(input$file$datapath, header = input$colNamesTable, row.names = 1, sep = input$fieldSepTable)
             }
