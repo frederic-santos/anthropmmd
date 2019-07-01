@@ -8,7 +8,7 @@ stages:
 building:
   stage: build
   script:
-    - R -e "remotes::install_deps(dependencies = T)"
+    - R -e "remotes::install_deps(dependencies = TRUE)"
     - R -e 'devtools::check()'
 
 # To have the converage percentge appear as a gitlab badge follow these instructions
