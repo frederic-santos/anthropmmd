@@ -1,7 +1,7 @@
 AnthropMMD 
 ==========
-
-[![coverage report](https://gitlab.com/f.santos/anthropmmd/badges/devel/coverage.svg)](https://gitlab.com/f.santos/anthropmmd/commits/devel)
+* Build status: [![pipeline status](https://gitlab.com/f.santos/anthropmmd/badges/devel/pipeline.svg)](https://gitlab.com/f.santos/anthropmmd/commits/devel)
+* Code coverage (R): [![coverage report](https://gitlab.com/f.santos/anthropmmd/badges/devel/coverage.svg)](https://gitlab.com/f.santos/anthropmmd/commits/devel)
 
 ## Installation of the R package AnthropMMD using *devtools*
 
