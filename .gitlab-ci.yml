@@ -22,7 +22,7 @@ testing:
     when: on_success
     script:
         - Rscript -e 'install.packages("DT")'
-        - Rscript -e 'cc <- covr::package_coverage; covr::gitlab(coverage = cc); cat("Code coverage:", paste0(format(covr::percent_coverage(cc), nsmall = 1),"%"))'
+	- Rscript -e 'covr::gitlab(quiet = FALSE)'
     artifacts:
         paths:
             - public
