@@ -70,7 +70,7 @@ server <- shinyServer(function(input, output, session) {
                                    strategy = as.character(input$exclusionStrategy), groups = as.character(input$selectGroups),
                                    angular = as.character(input$formuleMMD), OMDvalue = input$OMDvalue)
             if (ncol(as.data.frame(tempo$filtered)) < 2) {
-                showModal(modalDialog(title="Error", "With the current settings for trait sélection, there is less than two traits suitable for the analysis. Consequently, the MMD will not be calculated. Please change the strategy for trait sélection, or exclude some groups (with very few individuals) from the analysis.", easyClose = FALSE))
+                showModal(modalDialog(title = "Error", "With the current settings for trait selection, there is less than two traits suitable for the analysis. Consequently, the MMD will not be calculated. Please change the strategy for trait selection, or exclude some groups (with very few individuals) from the analysis.", easyClose = FALSE))
                 return()
             } else {
                 return(tempo)
