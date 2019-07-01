@@ -9,13 +9,14 @@
 
 ## User visible changes
 * `AnthropMMD` can now be used by command lines, and not only as an R-shiny application. The main goal is to make AnthropMMD suitable for reproducible research.
+* An example data file, `toyMMD`, is now available.
 * A vignette is now available.
 * Some small improvements in documentation files.
 
 ## Other changes
 * A large majority of comments in the R source files have been translated from French into English.
-* The reliability of future updates has been improved by implementing unit tests.
-* The indentation style in `.R` and `.Rd` files is closer to the R standards.
+* The reliability of future updates has been improved by implementing unit tests; and a CI pipeline has been set on the GitLab repo.
+* The indentation style in `.R` and `.Rd` files now follows the R standards.
 
 # AnthropMMD 2.5.3 (Release date: 2019-03-18)
 
