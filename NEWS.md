@@ -2,6 +2,7 @@
 
 ## Change in dependencies
 * Due to some new features implemented in `AnthropMMD`, the package now depends on R 3.5.0 or greater.
+* `AnthropMMD` now imports `plotrix`.
 * `AnthropMMD` now suggests `testthat` and `covr`.
 
 ## Change of License
