@@ -61,10 +61,11 @@ axes = FALSE, gof = FALSE, dim = 2, asp = TRUE, xlim = NULL)
   G. Dzemyda, O. Kurasova and J. Zilinskas (2013) \emph{Multidimensional
     Data  Visualization}, Springer, chap. 2, p. 39--40.
 
-  I. Borg, P. Groenen and P. Mair (2013) \emph{Applied Multidimensional Scaling}, Springer, chap. 7, p. 79.
+  I. Borg, P. Groenen and P. Mair (2013) \emph{Applied Multidimensional
+  Scaling}, Springer, chap. 7, p. 79.
 }
 \seealso{
-  \code{\link{StartMMD}}, \code{stats::cmdscale}, \code{smacof::smacofSym}
+  \code{\link{start_mmd}}, \code{stats::cmdscale}, \code{smacof::smacofSym}
 }
 \examples{
 # Load and visualize a binary dataset:

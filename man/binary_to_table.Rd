@@ -35,7 +35,7 @@ binary_to_table(data, relative = FALSE)
   10.1002/ajpa.23336
 }
 \seealso{
-  \eqn{StartMMD}
+  \code{\link{start_mmd}}
 }
 \examples{
 # Load and visualize a binary dataset:

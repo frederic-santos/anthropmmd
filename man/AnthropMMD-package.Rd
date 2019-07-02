@@ -45,5 +45,5 @@
 }
 \keyword{MMD, mean measure of divergence, nonmetric traits}
 \examples{
-\dontrun{ StartMMD() }
+\dontrun{ start_mmd() }
 }

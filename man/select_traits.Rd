@@ -55,7 +55,7 @@ angular = c("Anscombe", "Freeman"))
   10.1002/ajpa.23336
 }
 \seealso{
-  \code{\link{StartMMD}}
+  \code{\link{start_mmd}}
 }
 \examples{
 # Load and visualize a binary dataset:

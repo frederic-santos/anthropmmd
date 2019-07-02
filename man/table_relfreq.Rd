@@ -21,7 +21,7 @@ table_relfreq(tab)
   \code{tab} are simply transformed to relative frequencies.
 }
 \seealso{
-  \code{\link{binary_to_table}}, \code{\link{StartMMD}}
+  \code{\link{binary_to_table}}, \code{\link{start_mmd}}
 }
 \examples{
 # Load and visualize a binary dataset:

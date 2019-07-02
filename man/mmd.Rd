@@ -38,7 +38,7 @@ mmd(data, angular = c("Anscombe", "Freeman"))
   284--294. doi: 10.1002/ajpa.22708
 }
 \seealso{
-  \code{\link{StartMMD}}
+  \code{\link{start_mmd}}
 }
 \examples{
 # Load and visualize a binary dataset:
