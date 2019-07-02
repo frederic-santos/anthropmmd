@@ -29,7 +29,7 @@ Run the following commands in R:
 To start the graphical interface, run the following commands into the R console:
 
 	library(AnthropMMD)
-	StartMMD()
+	start_mmd()
 	
 ## Installation of AnthropMMD from CRAN
 
