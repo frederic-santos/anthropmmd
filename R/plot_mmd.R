@@ -1,4 +1,4 @@
-plot_mmd <- function(data, method = c("classical", "interval", "ratio", "ordinal"), axes = FALSE, gof = FALSE, dim = 2, asp = TRUE) {
+plot_mmd <- function(data, method = c("classical", "interval", "ratio", "ordinal"), axes = FALSE, gof = FALSE, dim = 2, asp = TRUE, xlim = NULL) {
 ### data: symmetrical matrix of MMD values
 ### method: type of MDS. "classical" for cmdscale, or one of SMACOF methods
 ### axes: boolean, display axes on plot or not
@@ -6,6 +6,8 @@ plot_mmd <- function(data, method = c("classical", "interval", "ratio", "ordinal
 ### dim: *maximal* dimension for the calculation of MDS coordinates. /!\ In fine, the solution can be computed on 2 axes only even if dim=3.
 ### asp: boolean, TRUE passes "asp=1" to plot function.
 
+####################################
+### 1. Verify and set some arguments
     aspValue <- ifelse(asp == TRUE, 1, NA) # 'translate' asp parameter as required by plot function
     method <- match.arg(method) # to avoid a warning with the default value
     if (! dim %in% c(2, 3)) {
@@ -13,7 +15,7 @@ plot_mmd <- function(data, method = c("classical", "interval", "ratio", "ordinal
     }
 
 #########################################################
-### 1. Compute the MDS according to user-defined criteria
+### 2. Compute the MDS according to user-defined criteria
     if (method == "classical") {
         ## Option A. Classical metric MDS
         res.mds <- cmdscale(data, k = dim, eig = TRUE) # *list* of MDS results
@@ -37,14 +39,19 @@ plot_mmd <- function(data, method = c("classical", "interval", "ratio", "ordinal
             rho.value <- mds_rho(mmd = data, coor = coor)
         }
     }
+    ## Set the limits for the x-axis on 2D plot, if no values were provided by the user:
+    if (is.null(xlim)) {
+        border_value <- max(abs(min(coor[,1])), abs(max(coor[,1])))
+        xlim <- c(-1.17 * border_value, 1.17 * border_value)
+    }
 
 #######################
-### 2. Display MDS plot
+### 3. Display MDS plot
     ## Option A. MDS 2D:
     if ((dim == 2) | (dim == 3 & ncol(coor) < 3) | (dim == 3 & ncol(coor) >= 3 & min(varByDim) < 2e-16)) { # if the user wanted a 2D plot, or if a 3D plot could not be computed
         if (ncol(coor) >= 2 & any(data > 0)) { # OK, the plot can be displayed
             plot(x = coor[ , 1], y = coor[ , 2], pch = 16, xlab = "", ylab = "", axes = axes,
-                 main = legend.plot, ylim = c(min(coor[,2]), 1.15*max(coor[,2])), asp = aspValue)
+                 main = legend.plot, ylim = c(1.1*min(coor[,2]), 1.15*max(coor[,2])), asp = aspValue, xlim = xlim)
             thigmophobe.labels(x = coor[ , 1], y = coor[ , 2], labels = rownames(coor))
             
             if (gof == TRUE) { # if the user wants the GOF to be displayed    

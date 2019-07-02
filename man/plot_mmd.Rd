@@ -11,7 +11,7 @@
 }
 \usage{
 plot_mmd(data, method = c("classical", "interval", "ratio", "ordinal"),
-axes = FALSE, gof = FALSE, dim = 2, asp = TRUE)
+axes = FALSE, gof = FALSE, dim = 2, asp = TRUE, xlim = NULL)
 }
 \arguments{
   \item{data}{A symmetrical matrix of MMD values}
@@ -27,6 +27,7 @@ axes = FALSE, gof = FALSE, dim = 2, asp = TRUE)
     \code{dim = 3}, the final solution may include only two axes.}
   \item{asp}{Boolean. If \code{TRUE}, the same scale is used for all
     axes. More details below.}
+  \item{xlim}{Parameter passed to \code{plot}, can be \code{NULL}.}
 }
 \value{
   This function returns no value by itself, and only plots a MDS in a
@@ -74,7 +75,7 @@ head(toyMMD)
 tab <- binary_to_table(toyMMD, relative = TRUE)
 tab
 # Compute and display a symmetrical matrix of MMD values:
-mmd.out <- mmd(tab, angular = "Anscombe")
+mmd.out <- mmd(tab, angular = "Freeman")
 # Plot a classical metric MDS in two dimensions:
 plot_mmd(data = mmd.out$MMDSym, method = "classical",
          axes = TRUE, gof = TRUE, dim = 2)
