@@ -12,6 +12,7 @@
 * `AnthropMMD` can now be used by command lines, and not only as an R-shiny application. The main goal is to make AnthropMMD suitable for reproducible research.
 * An example data file, `toyMMD`, is now available.
 * A vignette is now available.
+* Improved display of group labels on the MDS plots.
 * Some small improvements in documentation files.
 
 ## Other changes
