@@ -8,6 +8,9 @@ plot_mmd <- function(data, method = c("classical", "interval", "ratio", "ordinal
 
     aspValue <- ifelse(asp == TRUE, 1, NA) # 'translate' asp parameter as required by plot function
     method <- match.arg(method) # to avoid a warning with the default value
+    if (! dim %in% c(2, 3)) {
+        stop("Incorrect value for dim parameter: please choose 2 or 3.")
+    }
 
 #########################################################
 ### 1. Compute the MDS according to user-defined criteria
@@ -41,8 +44,8 @@ plot_mmd <- function(data, method = c("classical", "interval", "ratio", "ordinal
     if ((dim == 2) | (dim == 3 & ncol(coor) < 3) | (dim == 3 & ncol(coor) >= 3 & min(varByDim) < 2e-16)) { # if the user wanted a 2D plot, or if a 3D plot could not be computed
         if (ncol(coor) >= 2 & any(data > 0)) { # OK, the plot can be displayed
             plot(x = coor[ , 1], y = coor[ , 2], pch = 16, xlab = "", ylab = "", axes = axes,
-                 main = legend.plot, ylim=c(min(coor[,2]), 1.15*max(coor[,2])), asp = aspValue)
-            text(coor[ , 1], coor[ , 2], pos = 3, labels = rownames(coor))
+                 main = legend.plot, ylim = c(min(coor[,2]), 1.15*max(coor[,2])), asp = aspValue)
+            thigmophobe.labels(x = coor[ , 1], y = coor[ , 2], text.pos = 3, labels = rownames(coor))
             
             if (gof == TRUE) { # if the user wants the GOF to be displayed    
                 legend("topleft", legend = c(paste("Spearman's rho=", rho.value, sep = ""),
