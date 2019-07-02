@@ -45,7 +45,7 @@ plot_mmd <- function(data, method = c("classical", "interval", "ratio", "ordinal
         if (ncol(coor) >= 2 & any(data > 0)) { # OK, the plot can be displayed
             plot(x = coor[ , 1], y = coor[ , 2], pch = 16, xlab = "", ylab = "", axes = axes,
                  main = legend.plot, ylim = c(min(coor[,2]), 1.15*max(coor[,2])), asp = aspValue)
-            thigmophobe.labels(x = coor[ , 1], y = coor[ , 2], text.pos = 3, labels = rownames(coor))
+            thigmophobe.labels(x = coor[ , 1], y = coor[ , 2], labels = rownames(coor))
             
             if (gof == TRUE) { # if the user wants the GOF to be displayed    
                 legend("topleft", legend = c(paste("Spearman's rho=", rho.value, sep = ""),
