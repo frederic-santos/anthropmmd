@@ -1,6 +1,6 @@
-\name{StartMMD}
+\name{start_mmd}
+\alias{start_mmd}
 \alias{StartMMD}
-
 \title{
   An R-Shiny application for the mean measure of divergence
 }
@@ -11,6 +11,7 @@
 }
 
 \usage{
+start_mmd()
 StartMMD()
 }
 
@@ -157,5 +158,5 @@ any change in the analysis settings.
 }
 
 \examples{
-\dontrun{ StartMMD()}
+\dontrun{ start_mmd()}
 }
