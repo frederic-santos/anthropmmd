@@ -20,6 +20,10 @@
 * The reliability of future updates has been improved by implementing unit tests; and a CI pipeline has been set on the GitLab repo.
 * The indentation style in `.R` and `.Rd` files now follows the R standards.
 
+## Bug fixes
+* The Shiny app does not crash anymore if the user specifies a wrong field separator.
+* Fix in the computation of Spearman's measure of agreement for MDS, where the distances where erroneously counted twice. Although the impact was generally negligible, this resulted in a small overestimation of the quality of agreement.
+
 # AnthropMMD 2.5.3 (Release date: 2019-03-18)
 
 * First release on GitLab
