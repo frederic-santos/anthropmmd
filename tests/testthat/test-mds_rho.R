@@ -1,5 +1,4 @@
 library(AnthropMMD)
-library(MASS)
 
 ## Import dataset and transform it to a table of frequencies:
 data(toyMMD)
