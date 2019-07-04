@@ -1,6 +1,10 @@
 ---
-title: "intro_AnthropMMD"
-output: rmarkdown::html_vignette
+title: "An overview of AnthropMMD"
+author: "Frédéric Santos, <frederic.santos[at]u-bordeaux.fr>"
+output: 
+  html_document:
+    number_sections: true
+    theme: cerulean
 vignette: >
   %\VignetteIndexEntry{intro_AnthropMMD}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,6 +18,24 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r include=FALSE}
 library(AnthropMMD)
 ```
+
+# Graphical user interface
+
+`AnthropMMD` was primarily designed as an R-Shiny application, that can be launched with the following instruction:
+```{r eval=FALSE, include=TRUE}
+AnthropMMD::start_mmd()
+```
+
+Starting with the version 3.0.0, it can also be used from the command line, to make it useful in a context of reproducible research.
+
+# Using `AnthropMMD` from the command line
+
+## Data formatting
+
+Two types of datasets can be used:
+
+* **Raw (binary) data**: a classical dataframe with $n$ rows (one per individual) and $p+1$ columns (the first column is a group indicator; the $p$ other columns correspond to the $p$ binary traits observed). Each trait has two possible values: $1$ if present, $0$ if absent (missing values are allowed). An artifical dataset
+* **Tables of frquencies**
