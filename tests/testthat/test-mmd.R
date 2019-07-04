@@ -24,6 +24,15 @@ res.ft <- matrix(c(0.000, 0.271, 0.042,	0.298, 0.064,
                  byrow = TRUE, ncol = 5)
 colnames(res.ft) <- c("GroupA", "GroupB", "GroupC", "GroupD", "GroupE")
 rownames(res.ft) <- c("GroupA", "GroupB", "GroupC", "GroupD", "GroupE")
+## Expected result for MMD significance:
+res.sig <- matrix(c(NA, "0.255", "0.045", "0.303", "0.069",
+                    "*", NA, "0.218", "0.365", "0.241",
+                    "NS", "*", NA, "0.088", "0.034",
+                    "*", "*", "*", NA, "0.168",
+                    "NS", "*", "NS", "*", NA),
+                  byrow = TRUE, ncol = 5)
+colnames(res.sig) <- c("GroupA", "GroupB", "GroupC", "GroupD", "GroupE")
+rownames(res.sig) <- c("GroupA", "GroupB", "GroupC", "GroupD", "GroupE")
 
 ## Tests for MMD values:
 test_that("MMD values are correct with Anscombe transformation", {
@@ -32,4 +41,9 @@ test_that("MMD values are correct with Anscombe transformation", {
 
 test_that("MMD values are correct with Freeman-Tukey transformation", {
     expect_equal(round(mmd.ft$MMDSym, 3), res.ft)    
+})
+
+## Tests for MMD significance:
+test_that("MMD significance is OK", {
+    expect_equal(mmd.ans$MMDSignif, res.sig)    
 })
