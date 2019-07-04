@@ -1,8 +1,7 @@
-validDataMMD <- function(tab, type) {
-### tab : dataframe, importé depuis l'UI
-### type : chaîne, 'raw' ou 'table', indiquant le type des données
-### vérifie si le dataframe "tab", du type "type" (raw ou table) est bien valide pour AnthropMMD
-### output -> booléen
+valid_data_mmd <- function(tab, type) {
+### tab : dataframe loaded through the UI
+### type : 'raw' or 'table', indicating the type of data submitted
+### Output -> boolean. This function checks if "tab" is suitable for AnthropMMD
     
     if (ncol(tab) <= 1) { # For both types (raw or table), the data file is invalid if it has only one column (probably wrong field separator)
         warning("Only one column read in the data file. Please check the field separator.")
@@ -32,7 +31,7 @@ validDataMMD <- function(tab, type) {
             for (j in 1:ncol(tab)) {
                 ok01[j] <- all(levels(tab[,j]) %in% c("0", "1"))
             }
-            if (all(ok01)) { # si tous les facteurs ne prennent bien que les valeurs 0 et 1 :
+            if (all(ok01)) { # all factors have only 0s and 1s
                 return(TRUE)		
             } else {
                 warning("At least one of your columns does not contain only zeroes and ones. Please check your data.")
