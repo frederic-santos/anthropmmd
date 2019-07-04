@@ -38,4 +38,5 @@ Starting with the version 3.0.0, it can also be used from the command line, to m
 Two types of datasets can be used:
 
 * **Raw (binary) data**: a classical dataframe with $n$ rows (one per individual) and $p+1$ columns (the first column is a group indicator; the $p$ other columns correspond to the $p$ binary traits observed). Each trait has two possible values: $1$ if present, $0$ if absent (missing values are allowed). An artifical dataset
+
 * **Tables of frquencies**
