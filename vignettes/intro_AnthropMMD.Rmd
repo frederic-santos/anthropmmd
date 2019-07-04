@@ -1,0 +1,19 @@
+---
+title: "intro_AnthropMMD"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{intro_AnthropMMD}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(AnthropMMD)
+```

@@ -3,7 +3,7 @@
 ## Change in dependencies
 * Due to some new features implemented in `AnthropMMD`, the package now depends on R 3.5.0 or greater.
 * `AnthropMMD` now imports `plotrix`.
-* `AnthropMMD` now suggests `testthat` and `covr`.
+* `AnthropMMD` now suggests `covr`, `knitr`, `rmarkdown` and `testthat`.
 
 ## Change of License
 * `AnthropMMD` is now distributed under CeCILL 2.1 license (instead of GPL 3).
