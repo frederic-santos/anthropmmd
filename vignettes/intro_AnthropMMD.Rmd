@@ -5,13 +5,13 @@ output:
   rmarkdown::html_vignette:
     number_sections: true
     toc: true
-    df_print: paged
     fig_width: 5
     fig_height: 5
 vignette: >
   %\VignetteIndexEntry{intro_AnthropMMD}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: biblio.bib
 ---
 
 ```{r, include = FALSE}
@@ -28,7 +28,7 @@ library(AnthropMMD)
 
 # Graphical user interface
 
-`AnthropMMD` was primarily designed as an R-Shiny application, that can be launched with the following instruction:
+`AnthropMMD` was primarily designed as an R-Shiny application [@Santos18], that can be launched with the following instruction:
 ```{r eval=FALSE, include=TRUE}
 AnthropMMD::start_mmd()
 ```
@@ -39,9 +39,9 @@ Starting with the version 3.0.0, it can also be used from the command line, to m
 
 ## Data formatting
 
-The MMD is a dissimilarity measure among groups of individuals described by binary (presence-absence) traits. The MMD formula only requires to know the sample sizes and relative trait frequencies within each group: providing the raw individual data is not mandatory. 
+The MMD is a dissimilarity measure among groups of individuals described by binary (presence-absence) traits [@Sjovold73; @Sjovold77; @Harris04]. The MMD formula only requires to know the sample sizes and relative trait frequencies within each group: providing the raw individual data is not mandatory. 
 
-Typically, the user will register the data in one of the the two following formats.
+Usually, the user will have recorded the data in one of the the two following formats.
 
 ### Raw binary data
 Most of the time, the data will be formatted as a classical dataframe with $n$ rows (one per individual) and $p+1$ columns (the first column must be a group indicator; the $p$ other columns correspond to the $p$ binary traits observed). Each trait has two possible values: $1$ if present, $0$ if absent (missing values are allowed). Rownames are optional but colnames (i.e., `header`s) are mandatory.
@@ -50,10 +50,10 @@ An artifical dataset, `toyMMD`, is available in the package:
 
 ```{r rows.print=8}
 data(toyMMD)
-toyMMD
+head(toyMMD)
 ```
 
-It is not necessary for the `Trait`s to be manually converted as factors, since this operation will be automatically performed in the next steps. `toyMMD` includes nine traits with many missing values and the individuals belong to five groups:
+It is not necessary for the `Trait`s to be manually converted as factors. `toyMMD` includes nine traits with many missing values, and the individuals belong to five groups:
 
 ```{r}
 str(toyMMD)
@@ -67,11 +67,9 @@ tab
 ```
 
 ### Tables of sample sizes and absolute frequencies
-Sometimes, in particular if the data were extracted from research articles rather than true exprimentation, the user will only know the sample sizes and absolute trait frequencies in each group. As previously stated, those data are perfectly sufficient to computed MMD values. Here is an example of such a table:
-```{r echo=FALSE}
-absolute_freqs <- binary_to_table(data = toyMMD, relative = FALSE)
-```
+Sometimes, in particular if the data were extracted from research articles rather than true exprimentation, the user will only know the sample sizes and absolute trait frequencies in each group. As previously stated, those data are perfectly sufficient to compute MMD values. Here is an example of such a table:
 ```{r}
+data(absolute_freqs)
 absolute_freqs
 ```
 
@@ -92,7 +90,7 @@ A quick summary:
 * if you load a table of absolute frequencies, convert it to a table of relative frequencies with the function `table_relfreq`.
 
 ## Trait selection
-`AnthropMMD` proposes a built-in feature for trait selection, in order to discard the traits that could be observed on too few individuals, or that do not show enough variability among groups. The function `select_traits` allows such a selection according to several strategies.
+`AnthropMMD` proposes a built-in feature for trait selection, in order to discard the traits that could be observed on too few individuals, or that do not show enough variability among groups. The function `select_traits` allows such a selection according to several strategies [@Harris04; @Santos18].
 
 For instance, with the following instruction, we can discard the traits that could be observed on at least 10 individuals *per group*, and that exhibit no significant variability in frequencies among groups according to Fisher's exact tests:
 ```{r}
@@ -109,7 +107,7 @@ mmd.result <- mmd(tab_selected$filtered, angular = "Anscombe")
 mmd.result
 ```
 
-* The first component, `$MMDMatrix`, follows the presentation adopted in most research articles: the true MMD values are indicated above the diagonal, and their standard deviations are indicated below the diagonal.
+* The first component, `$MMDMatrix`, follows the presentation adopted in most research articles [@Donlon00]: the true MMD values are indicated above the diagonal, and their standard deviations are indicated below the diagonal.
 * A MMD value can be considered as significant if it is greater than twice its standard deviation. Significant MMD values are indicated by a `*` in the component `$MMDSignif`.
 * Finally, the component `$MMDSym` is a symmetrical matrix of MMD values, with a null diagonal. This matrix of dissimilarities can be used to perform a multidimensional scaling or a hierarchical clustering to visualize the distances among the groups.
 
@@ -136,3 +134,4 @@ par(cex = 0.8)
 plot(agnes(mmd.result$MMDSym), which.plots = 2, main = "Dendrogram of MMD dissimilarities")
 ```
 
+# References
