@@ -39,7 +39,7 @@ select_traits <- function(tab, k = 10, strategy = c("none", "excludeNPT", "exclu
 
 ####################################################################
 ### 3. Addtional step to discard the traits with too few variability
-    OMDs <- compute_omd(tab = tab, formule = angular, OMDvalue = OMDvalue)
+    OMDs <- compute_omd(data = tab, formule = angular, OMDvalue = OMDvalue)
     if (strategy == "excludeNPT") { # Scheme of exclusion: exclude non-polymorphic traits
         polym <- rep(NA, ncol(tab))
         for (j in 1:ncol(tab)) {

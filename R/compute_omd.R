@@ -1,4 +1,4 @@
-compute_omd <- function(tab, formule, OMDvalue = 0) {
+compute_omd <- function(data, formule, OMDvalue = 0) {
 ### Computes the overall measure of divergence for each trait
 ### tab: the data in 'table of frequencies' format
 ### formule: string, "Anscombe" or "Freeman"
@@ -33,11 +33,11 @@ compute_omd <- function(tab, formule, OMDvalue = 0) {
     ## At this stage, OMD_matrix = OMD values for each trait, sorted in the original order of traits in the data
     
     ## 3. Return the results:
-    OMDMatrixSorted <- as.matrix(OMD_matrix[order(OMD_matrix[,1], decreasing = TRUE), ]) # OMD values sorted by decreasing order
-    OMDMatrixSortedPos <- as.matrix(OMDMatrixSorted[OMDMatrixSorted[,1] > OMDvalue, ]) # OMD values, sorted and *greater than a given threshold*
-    OMDMatrixPos <- as.matrix(OMDMatrix[OMDMatrix[,1] > OMDvalue, ]) # OMD values, in the original order and *greater than a given threshold*
-    return(list("Matrix" = OMDMatrix,
-                "Pos" = OMDMatrixPos,
-                "Sorted" = OMDMatrixSorted,
-                "SortedPos" = OMDMatrixSortedPos))
+    OMD_matrix_sorted <- as.matrix(OMD_matrix[order(OMD_matrix[,1], decreasing = TRUE), ]) # OMD values sorted by decreasing order
+    OMD_matrix_sorted_pos <- as.matrix(OMD_matrix_sorted[OMD_matrix_sorted[,1] > OMDvalue, ]) # OMD values, sorted and *greater than a given threshold*
+    OMD_matrix_pos <- as.matrix(OMD_matrix[OMD_matrix[,1] > OMDvalue, ]) # OMD values, in the original order and *greater than a given threshold*
+    return(list("Matrix" = OMD_matrix,
+                "Pos" = OMD_matrix_pos,
+                "Sorted" = OMD_matrix_sorted,
+                "SortedPos" = OMD_matrix_sorted_pos))
 }
