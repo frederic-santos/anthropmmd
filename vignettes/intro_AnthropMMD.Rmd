@@ -2,9 +2,12 @@
 title: "An overview of AnthropMMD"
 author: "Frédéric Santos, <frederic.santos[at]u-bordeaux.fr>"
 output: 
-  html_document:
+  rmarkdown::html_vignette:
     number_sections: true
-    theme: cerulean
+    toc: true
+    df_print: paged
+    fig_width: 5
+    fig_height: 5
 vignette: >
   %\VignetteIndexEntry{intro_AnthropMMD}
   %\VignetteEngine{knitr::rmarkdown}
@@ -16,6 +19,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+options(digits = 3)
 ```
 
 ```{r include=FALSE}
@@ -29,14 +33,82 @@ library(AnthropMMD)
 AnthropMMD::start_mmd()
 ```
 
-Starting with the version 3.0.0, it can also be used from the command line, to make it useful in a context of reproducible research.
+Starting with the version 3.0.0, it can also be used from the command line, to make it convenient in a context of reproducible research.
 
 # Using `AnthropMMD` from the command line
 
 ## Data formatting
 
-Two types of datasets can be used:
+The MMD is a dissimilarity measure among groups of individuals described by binary (presence-absence) traits. Typically, the user will register the data in one of the the two following formats.
 
-* **Raw (binary) data**: a classical dataframe with $n$ rows (one per individual) and $p+1$ columns (the first column is a group indicator; the $p$ other columns correspond to the $p$ binary traits observed). Each trait has two possible values: $1$ if present, $0$ if absent (missing values are allowed). An artifical dataset
+### Raw (binary) data
+Most of the time, the data will be formatted as a classical dataframe with $n$ rows (one per individual) and $p+1$ columns (the first column must be a group indicator; the $p$ other columns correspond to the $p$ binary traits observed). Each trait has two possible values: $1$ if present, $0$ if absent (missing values are allowed). Rownames are optional but colnames (i.e., `header`s) are mandatory.
 
-* **Tables of frquencies**
+An artifical dataset, `toyMMD`, is available in the package:
+
+```{r rows.print=8}
+data(toyMMD)
+toyMMD
+```
+
+  It is not necessary for the `Trait`s to be manually converted as factors, since this operation will be automatically performed in the next steps. `toyMMD` includes nine traits with many missing values and the individuals belong to five groups:
+
+```{r}
+str(toyMMD)
+```
+
+### Tables of frequencies
+The MMD can be computed knowing only the sample sizes and trait frequencies in each group: the raw individual data is not mandatory. The user can import directly such a table; but if the data were recorded as a raw binary dataset, they **must** be converted into a table of frequencies prior to the MMD analysis. The R function `binary_to_table` can perform this operation:
+
+```{r}
+tab <- binary_to_table(toyMMD, relative = TRUE)
+tab
+```
+
+If there are $k$ groups in the data, the first $k$ rows (whose names must start with an `N_` prefix, followed by the group labels) indicates the sample sizes of each trait in each group, and the last $k$ rows indicates the relative frequencies. Such a table can be directly imported by the user, but most of them will probably prefer import a binary dataset and the convert it into such a table (this is the recommended option).
+
+## Trait selection
+`AnthropMMD` proposes a built-in feature for trait selection, in order to discard the traits that could be observed on too few individuals, or that do not show enough variability among groups. The function `select_traits` allows such a selection according to several strategies.
+
+For instance, with the following instruction, we can discard the traits that could be observed on at least 10 individuals *per group*, and that exhibit no significant variability in frequencies among groups according to Fisher's exact tests:
+```{r}
+tab_selected <- select_traits(tab, k = 10, strategy = "keepFisher")
+tab_selected$filtered
+```
+
+`Trait1` (which could be observed on only 8 individuals in Group B), `Trait5` and `Trait8` (whose variation in frequencies was not significant among groups) were removed from the data.
+
+## Compute to Mean Measure of Divergence
+Once the trait selection has been performed, the MMD can be computed with the `mmd` function. With the following instruction, the MMD is computed using Anscombe's angular transformation of trait frequencies:
+```{r}
+mmd.result <- mmd(tab_selected$filtered, angular = "Anscombe")
+mmd.result
+```
+
+* The first component, `$MMDMatrix`, follows the presentation adopted in most research articles: the true MMD values are indicated above the diagonal, and their standard deviations are indicated below the diagonal.
+* A MMD value can be considered as significant if it is greater than twice its standard deviation. Significant MMD values are indicated by a `*` in the component `$MMDSignif`.
+* Finally, the component `$MMDSym` is a symmetrical matrix of MMD values, with a null diagonal. This matrix of dissimilarities can be used to perform a multidimensional scaling or a hierarchical clustering to visualize the distances among the groups.
+
+## Graphical representations of MMD
+### Multidimensional scaling
+Although `mmd.result$MMDSym` can perfectly be passed to your favourite function to produce a MDS plot, `AnthropMMD` also proposes a built-in function for such a graphical representation: `plot_mmd`. 
+
+The MDS can be computed using the classical `stats::cmdscale` function (and the produces a metric MDS), or several variants of MDS algorithms implemented in the R package `smacof`.
+
+For instance, we plot here the MDS coordinates computed with one variant of SMACOF algorithms:
+```{r}
+par(cex = 0.8)
+plot_mmd(data = mmd.result$MMDSym, method = "interval", 
+         gof = TRUE, axes = TRUE, xlim = c(-1.2, 0.75))
+```
+
+The argument `gof = TRUE` displays goodness of fits statistics for the MDS conigurations directly on the plot.
+
+### Hierarchical clustering
+`AnthropMMD` does not propose a built-in function for hierarchical clustering, but such a plot can easily be obtained with the usual R functions.
+```{r}
+library(cluster)
+par(cex = 0.8)
+plot(agnes(mmd.result$MMDSym), which.plots = 2, main = "Dendrogram of MMD dissimilarities")
+```
+
