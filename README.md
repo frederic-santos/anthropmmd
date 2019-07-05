@@ -1,7 +1,7 @@
 AnthropMMD 
 ==========
-[![pipeline status](https://gitlab.com/f.santos/anthropmmd/badges/devel/pipeline.svg)](https://gitlab.com/f.santos/anthropmmd/commits/devel)
-[![coverage report](https://gitlab.com/f.santos/anthropmmd/badges/devel/coverage.svg)](https://gitlab.com/f.santos/anthropmmd/commits/devel)
+[![pipeline status](https://gitlab.com/f.santos/anthropmmd/badges/master/pipeline.svg)](https://gitlab.com/f.santos/anthropmmd/commits/master)
+[![coverage report](https://gitlab.com/f.santos/anthropmmd/badges/master/coverage.svg)](https://gitlab.com/f.santos/anthropmmd/commits/master)
 
 ## Installation of the R package AnthropMMD using *devtools*
 
@@ -9,7 +9,7 @@ AnthropMMD
 
 Make sure that R >= 3.5.0 is installed. Then:
 
-1. Install *devtools* by typing the following command line into the R console:
+1. Install `devtools` by typing the following command line into the R console:
 
 	   install.packages("devtools")
 
