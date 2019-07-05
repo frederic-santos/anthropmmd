@@ -108,8 +108,8 @@ any change in the analysis settings.
   zeros, so that the MMD matrix can be seen as a symmetrical distance
   matrix. Please note that the classical two-dimensional metric MDS plot
   cannot be displayed if there is only one positive eigenvalue. Several
-  MDS options are proposed, cf. the help page of the \sQuote{smacofSym}
-  function from the R package \sQuote{smacof} for detailed technical
+  MDS options are proposed, cf. the help page of the \code{smacofSym}
+  function from the R package \code{smacof} for detailed technical
   information.
 }
 }

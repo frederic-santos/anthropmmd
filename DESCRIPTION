@@ -11,6 +11,7 @@ Imports: plotrix,
 	 shiny, 
 	 smacof
 Suggests: 
+    cluster,
     covr,
     knitr,
     rmarkdown,
