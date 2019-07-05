@@ -2,7 +2,8 @@
 \alias{toyMMD}
 \docType{data}
 \title{
-  A toy example dataset for mean measures of divergence
+  A toy example dataset for mean measures of divergence, in a binary
+  format
 }
 \description{
   This artifical dataset includes 200 individuals described by 9 binary
