@@ -6,7 +6,7 @@ fisherTestTab <- function(tab) {
     ## 1. Set some constants:
     nb_groups <- nrow(tab) / 2 # number of groups
     nb_traits <- ncol(tab) # number of traits
-    group_names <- extract_groups(tab)
+    group_names <- extract_groups(tab, type = "table")
     MatRes <- matrix(NA, ncol = nb_traits, nrow = nb_groups*(nb_groups-1)/2) # initialize an empty matrix of p-values
     colnames(MatRes) <- colnames(tab)
     rownames(MatRes) <- 1:nrow(MatRes) # dumb initialization to avoid an error in subsequent commands
