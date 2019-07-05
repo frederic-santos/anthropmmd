@@ -29,7 +29,7 @@ fisherTestTab <- function(tab) {
     }
 
     ## 3. Return the results:
-    isInformative <- apply(MatRes, MARGIN = 2, FUN = function(x) if (any(x<=0.05)) return(TRUE) else return(FALSE))
+    isInformative <- apply(MatRes, MARGIN = 2, FUN = function(x) return(ifelse(any(x <= 0.05), TRUE, FALSE)))
     return(list(informative = tab[ , isInformative], pval = MatRes))
 }
 
