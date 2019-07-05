@@ -26,7 +26,7 @@ server <- shinyServer(function(input, output, session) {
                 updateNumericInput(session, "MDSdim", value = 2, min = 2, max = ifelse(length(groups)>3,3,2)) # ... and maximal admissible dimension for the MDS
                 output$text_title_summary <- renderText("Number of individuals and relative frequencies for each active variable within each group")
                 output$text_table_MMD <- renderText("MMD values (upper triangular part) and associated SD values (lower triangular part)") # render titles of all tables (passed to UI)
-                output$text_table_IMD <- renderText("Overall measure of divergence for each variable, sorted in decreasing order of discriminatory power") 
+                output$text_table_OMD <- renderText("Overall measure of divergence for each variable, sorted in decreasing order of discriminatory power") 
                 output$text_table_MMDSym <- renderText("Symmetrical matrix of MMD values") 
                 output$text_table_MMDSignif <- renderText("MMD values (upper triangular part) and their significance (indicated by a * in the lower part; 'NS'='non significant')")
                 if (input$typeData == "raw") { # this dataset is already a table of sample sizes and frequencies
@@ -170,16 +170,16 @@ server <- shinyServer(function(input, output, session) {
     }) # the function triggered by the download button
 
     ## 2.2.2. Matrix of 'OMD' values:
-    output$tableIMD <- renderTable(dat()$OMD, rownames = TRUE, digits = 3)
+    output$tableOMD <- renderTable(dat()$OMD, rownames = TRUE, digits = 3)
     
-    output$button_download_tableIMD <- renderUI({ # this button is rendered and displayed only once the data have been loaded
+    output$button_download_tableOMD <- renderUI({ # this button is rendered and displayed only once the data have been loaded
         if (input$loadData > 0 & exists("dat", envir = myenvg) & length(input$selectGroups) > 1) { 
-            downloadButton("download_tableIMD", "Download this table [CSV file]")
+            downloadButton("download_tableOMD", "Download this table [CSV file]")
         } else { 
             return() 
         }
     })
-    output$download_tableIMD <- downloadHandler(filename='Overall_MD_matrix.csv', content=function(file) {
+    output$download_tableOMD <- downloadHandler(filename='Overall_MD_matrix.csv', content=function(file) {
         write.csv(dat()$OMD, file)
     }) # the function triggered by the download button
 

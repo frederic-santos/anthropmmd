@@ -33,11 +33,11 @@ compute_omd <- function(tab, formule, OMDvalue = 0) {
     ## At this stage, OMD_matrix = OMD values for each trait, sorted in the original order of traits in the data
     
     ## 3. Return the results:
-    IMDMatrixSorted <- as.matrix(OMD_matrix[order(OMD_matrix[,1], decreasing = TRUE), ]) # OMD values sorted by decreasing order
-    IMDMatrixSortedPos <- as.matrix(IMDMatrixSorted[IMDMatrixSorted[,1] > OMDvalue, ]) # OMD values, sorted and *greater than a given threshold*
-    IMDMatrixPos <- as.matrix(IMDMatrix[IMDMatrix[,1] > OMDvalue, ]) # OMD values, in the original order and *greater than a given threshold*
-    return(list("Matrix" = IMDMatrix,
-                "Pos" = IMDMatrixPos,
-                "Sorted" = IMDMatrixSorted,
-                "SortedPos" = IMDMatrixSortedPos))
+    OMDMatrixSorted <- as.matrix(OMD_matrix[order(OMD_matrix[,1], decreasing = TRUE), ]) # OMD values sorted by decreasing order
+    OMDMatrixSortedPos <- as.matrix(OMDMatrixSorted[OMDMatrixSorted[,1] > OMDvalue, ]) # OMD values, sorted and *greater than a given threshold*
+    OMDMatrixPos <- as.matrix(OMDMatrix[OMDMatrix[,1] > OMDvalue, ]) # OMD values, in the original order and *greater than a given threshold*
+    return(list("Matrix" = OMDMatrix,
+                "Pos" = OMDMatrixPos,
+                "Sorted" = OMDMatrixSorted,
+                "SortedPos" = OMDMatrixSortedPos))
 }

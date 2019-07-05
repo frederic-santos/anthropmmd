@@ -39,14 +39,14 @@ select_traits <- function(tab, k = 10, strategy = c("none", "excludeNPT", "exclu
 
 ####################################################################
 ### 3. Addtional step to discard the traits with too few variability
-    IMDs <- calcIMD(tab = tab, formule = angular, OMDvalue = OMDvalue)
+    OMDs <- compute_omd(tab = tab, formule = angular, OMDvalue = OMDvalue)
     if (strategy == "excludeNPT") { # Scheme of exclusion: exclude non-polymorphic traits
         polym <- rep(NA, ncol(tab))
         for (j in 1:ncol(tab)) {
             polym[j] <- ifelse(all(tab[(nbGroupes+1):nrow(tab), j] == 0) | all(tab[(nbGroupes+1):nrow(tab), j] == 1), FALSE, TRUE) # TRUE iff the trait has two levels
         }
         tab <- tab[ , polym] # keep polymorphic traits only
-        tabDisplay <- IMDs$Sorted[rownames(IMDs$Sorted) %in% colnames(tab), ]
+        tabDisplay <- OMDs$Sorted[rownames(OMDs$Sorted) %in% colnames(tab), ]
     } 
     else if (strategy=="excludeQNPT") { # Scheme of exclusion: "quasi-non-polymorphic" traits
         avirer <- rep(NA, ncol(tab))
@@ -56,18 +56,18 @@ select_traits <- function(tab, k = 10, strategy = c("none", "excludeNPT", "exclu
             avirer[j] <- ifelse(sum(tabprov)<=1 | sum(tabprov)>=(sum(tab[1:nbGroupes, j])-1), FALSE, TRUE) 
         }
         tab <- tab[ , avirer]
-        tabDisplay <- IMDs$Sorted[rownames(IMDs$Sorted) %in% colnames(tab), ]
+        tabDisplay <- OMDs$Sorted[rownames(OMDs$Sorted) %in% colnames(tab), ]
     } 
     else if (strategy=="excludeNOMD") { # Scheme of exclusion: weak contribution to MMD
-        tab <- tab[ , rownames(IMDs$Pos)]
-        tabDisplay <- IMDs$SortedPos
+        tab <- tab[ , rownames(OMDs$Pos)]
+        tabDisplay <- OMDs$SortedPos
     } 
     else if (strategy=="keepFisher") { # Scheme of exclusion: keep only those traits that show significant differencies between groups at Fisher's exact test
         tab <- fisherTestTab(tab)$informative
-        tabDisplay <- IMDs$Sorted[rownames(IMDs$Sorted) %in% colnames(tab), ]
+        tabDisplay <- OMDs$Sorted[rownames(OMDs$Sorted) %in% colnames(tab), ]
         
     } else { # Scheme of exclusion: "none", no particular criterion -> no filtering at all.
-        tabDisplay <- IMDs$Sorted
+        tabDisplay <- OMDs$Sorted
     }
     
 #########################

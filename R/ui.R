@@ -113,10 +113,10 @@ ui <- shinyUI(fluidPage(theme="style/kappa.css", # prefix 'style' to locate the 
               uiOutput("button_download_tableMMDSym"),
               br(),
               br(),
-              strong(textOutput("text_table_IMD")), # this element is processed in server.R only after loading the file
+              strong(textOutput("text_table_OMD")), # this element is processed in server.R only after loading the file
               br(),
-              div(style="overflow:auto; height:210px; width:50%;", tableOutput("tableIMD")),
-              uiOutput("button_download_tableIMD")
+              div(style="overflow:auto; height:210px; width:50%;", tableOutput("tableOMD")),
+              uiOutput("button_download_tableOMD")
             ),
             column(6,
               br(),
