@@ -42,3 +42,20 @@ max3 <- function(dat) {
     mins <- apply(dat[1:(nrow(dat)/2),], MARGIN = 2, FUN = min) # for each trait, the minimal sample size reached among all groups
     return(as.numeric(sort(mins, decreasing = TRUE)[2])) # return the second greatest value (so that at least *two* traits can be used in further analyses)
 }
+
+extract_groups <- function(tab, type) {
+### Function extracting the group names from the data
+### tab: dataframe loaded through the UI
+### type: string ('raw' or 'table')
+### output -> vector of strings
+    
+    if (type == "raw") {
+        ## raw binary data:
+        return(levels(tab[ , 1]))
+    } else if (type == "table") { 
+        ## table of n's and frequencies:
+        nb_grps <- nrow(tab) / 2 # number of groups
+        noms <- rownames(tab)[1:nb_grps] # should be 'N_Group1', 'N_Group2', ...
+        return(substr(noms, 3 , nchar(noms))) # thus discard the 'N_' in each one.
+    }
+}

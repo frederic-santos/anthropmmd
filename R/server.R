@@ -21,7 +21,7 @@ server <- shinyServer(function(input, output, session) {
                 dat <- read.table(input$file$datapath, header = input$colNamesTable, row.names = 1, sep = input$fieldSepTable)
             }
             if (valid_data_mmd(dat, type = input$typeData)) { # quick checks: is it a valid data file?
-                groups <- extractGroups(dat, type = input$typeData) # retrieve the groups from the data file
+                groups <- extract_groups(dat, type = input$typeData) # retrieve the groups from the data file
                 updateSelectizeInput(session, "selectGroups", choices = groups, selected = groups, server = TRUE) # update the UI widget displaying the list of groups...
                 updateNumericInput(session, "MDSdim", value = 2, min = 2, max = ifelse(length(groups)>3,3,2)) # ... and maximal admissible dimension for the MDS
                 output$text_title_summary <- renderText("Number of individuals and relative frequencies for each active variable within each group")
