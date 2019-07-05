@@ -43,7 +43,9 @@
   of Physical Anthropology}, \bold{165}(1), 200--205. doi:
   10.1002/ajpa.23336
 }
-\keyword{MMD, mean measure of divergence, nonmetric traits}
+\concept{MMD}
+\concept{mean measure of divergence}
+\concept{nonmetric traits}
 \examples{
 \dontrun{ start_mmd() }
 }

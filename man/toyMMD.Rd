@@ -27,3 +27,4 @@
     \item{\code{Trait9}}{a numeric vector of zeroes and ones}
   }
 }
+\keyword{datasets}

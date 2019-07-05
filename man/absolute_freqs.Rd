@@ -25,3 +25,4 @@
     \item{\code{Trait9}}{summary statistics for this trait}
   }
 }
+\keyword{datasets}

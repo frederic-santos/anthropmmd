@@ -55,3 +55,5 @@ mmd.out$MMDSym
 mmd.out$MMDSignif
 }
 \author{Frédéric Santos, \email{frederic.santos@u-bordeaux.fr}}
+\concept{MMD}
+\concept{mean measure of divergence}
