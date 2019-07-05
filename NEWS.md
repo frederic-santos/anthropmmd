@@ -1,4 +1,4 @@
-# AnthropMMD 3.0.0 (Release date: 2019-09-01)
+# AnthropMMD 3.0.0 (Release date: 2019-07-05)
 
 ## Change in dependencies
 * Due to some new features implemented in `AnthropMMD`, the package now depends on R 3.5.0 or greater.
