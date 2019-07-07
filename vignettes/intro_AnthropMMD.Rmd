@@ -8,7 +8,7 @@ output:
     fig_width: 5
     fig_height: 5
 vignette: >
-  %\VignetteIndexEntry{intro_AnthropMMD}
+  %\VignetteIndexEntry{An overview of AnthropMMD}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 bibliography: biblio.bib
@@ -100,7 +100,7 @@ tab_selected$filtered
 
 `Trait1` (which could be observed on only 8 individuals in Group B), `Trait5` and `Trait8` (whose variation in frequencies was not significant among groups) were removed from the data.
 
-## Compute to Mean Measure of Divergence
+## Compute the mean measure of divergence
 Once the trait selection has been performed, the MMD can be computed with the `mmd` function. With the following instruction, the MMD is computed using Anscombe's angular transformation of trait frequencies:
 ```{r}
 mmd.result <- mmd(tab_selected$filtered, angular = "Anscombe")

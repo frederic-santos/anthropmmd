@@ -1,3 +1,8 @@
+# AnthropMMD 3.0.1 (Release date: 2019-07-11)
+
+## Minor changes
+* Fixed typos in package vignette and documentation files.
+
 # AnthropMMD 3.0.0 (Release date: 2019-07-05)
 
 ## Change in dependencies
