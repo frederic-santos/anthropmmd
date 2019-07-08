@@ -2,7 +2,7 @@ Package: AnthropMMD
 Type: Package
 Title: An R Package for Smith's Mean Measure of Divergence (MMD)
 Description: Offers a graphical user interface for the calculation of the mean measure of divergence, with facilities for trait selection and graphical representations <doi:10.1002/ajpa.23336>.
-Version: 3.0.0
+Version: 3.0.1
 Authors@R: c(person(given = "Frédéric", family = "Santos", role = c("aut", "cre"), 
                     email = "frederic.santos@u-bordeaux.fr", comment = c(ORCID="0000-0003-1445-3871")))
 Depends: R (>= 3.5.0)

@@ -14,8 +14,8 @@
   \tabular{ll}{
     Package: \tab AnthropMMD\cr
     Type: \tab Package\cr
-    Version: \tab 3.0.0\cr
-    Date: \tab 2019-07-05\cr
+    Version: \tab 3.0.1\cr
+    Date: \tab 2019-07-11\cr
     License: \tab CeCILL 2.1\cr
   }
 }
