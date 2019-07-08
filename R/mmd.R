@@ -2,6 +2,8 @@ mmd <- function(data, angular = c("Anscombe", "Freeman")) {
 ### data: table of group sample sizes and frequencies, such as returned by the function table_relfreq
 ### angular: choice of a formula for angular transformation
 
+    angular <- match.arg(angular) # to avoid a warning if the user do not specify anything
+    
     ## 1. Define some useful constants and matrices:
     nb_groups <- nrow(data) / 2 # number of groups in the data
     mat_size <- data[1:nb_groups, ] # portion of the data corresponding to the sample sizes
@@ -14,7 +16,7 @@ mmd <- function(data, angular = c("Anscombe", "Freeman")) {
 
     ## 3. Fill in the MMD matrix:
     for (i in 1:nrow(mmd_matrix)) {
-        for (j in 1:ncol(mmd_matrix)) {             
+        for (j in 1:ncol(mmd_matrix)) {
             mmd_vect <- rep(NA, ncol(mat_size))
             if (j > i) { # upper-diagonal part, to be filled with MMD values
                 for (k in 1:length(mmd_vect)) { 
@@ -28,8 +30,8 @@ mmd <- function(data, angular = c("Anscombe", "Freeman")) {
                     mmd_vect[k] <- sd_mmd(nA = mat_size[i,k], nB = mat_size[j,k]) 
                 }
                 mmd_matrix[i, j] <- sqrt(2*sum(mmd_vect)) / length(mmd_vect)
-            }          
-        } 
+            }
+        }
     }
     
     ## 4. Other results:
