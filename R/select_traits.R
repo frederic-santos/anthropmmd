@@ -5,7 +5,7 @@ select_traits <- function(tab, k = 10, strategy = c("none", "excludeNPT", "exclu
 ### groups: a factor or character vector, indicating the group to be considered in the analysis
 ### angular: angular transformation to be used in MMD formula
 
-    strategy <- match.arg(strategy) # to avoid a warning if the user do not specify anything
+    strategy <- match.arg(strategy) # to avoid a warning if the user does not specify anything
     angular <- match.arg(angular) # idem
     
 #############################################################
