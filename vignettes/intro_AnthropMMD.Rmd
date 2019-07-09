@@ -30,7 +30,7 @@ library(AnthropMMD)
 
 `AnthropMMD` was primarily designed as an R-Shiny application [@Santos18], that can be launched with the following instruction:
 ```{r eval=FALSE, include=TRUE}
-AnthropMMD::start_mmd()
+start_mmd()
 ```
 
 Starting with the version 3.0.0, it can also be used from the command line, to make it convenient in a context of reproducible research.
@@ -46,14 +46,14 @@ Usually, the user will have recorded the data in one of the the two following fo
 ### Raw binary data
 Most of the time, the data will be formatted as a classical dataframe with $n$ rows (one per individual) and $p+1$ columns (the first column must be a group indicator; the $p$ other columns correspond to the $p$ binary traits observed). Each trait has two possible values: $1$ if present, $0$ if absent (missing values are allowed). Rownames are optional but colnames (i.e., `header`s) are mandatory.
 
-An artifical dataset, `toyMMD`, is available in the package:
+An artifical dataset, `toyMMD`, is available in the package to give an example of such a format:
 
 ```{r rows.print=8}
 data(toyMMD)
 head(toyMMD)
 ```
 
-It is not necessary for the `Trait`s to be manually converted as factors. `toyMMD` includes nine traits with many missing values, and the individuals belong to five groups:
+It is not necessary for the `Trait`s to be manually converted as factors prior to the analysis. `toyMMD` includes nine traits with many missing values, and the individuals belong to five groups:
 
 ```{r}
 str(toyMMD)

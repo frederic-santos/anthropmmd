@@ -14,7 +14,9 @@ plot_mmd(data, method = c("classical", "interval", "ratio", "ordinal"),
 axes = FALSE, gof = FALSE, dim = 2, asp = TRUE, xlim = NULL)
 }
 \arguments{
-  \item{data}{A symmetrical matrix of MMD values}
+  \item{data}{A symmetrical matrix of MMD values; typically, it will be
+    the component \code{$MMDSym} of the result returned by the function
+    \code{\link{mmd}}}.
   \item{method}{Specification of MDS type. \code{classical} uses the
     metric MDS implemented in \code{stats::cmdscale}; the three other
     values are passed to the R function \code{smacof::smacofSym} (see
