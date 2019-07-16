@@ -15,7 +15,7 @@
     Package: \tab AnthropMMD\cr
     Type: \tab Package\cr
     Version: \tab 3.0.1\cr
-    Date: \tab 2019-07-11\cr
+    Date: \tab 2019-07-16\cr
     License: \tab CeCILL 2.1\cr
   }
 }
