@@ -16,7 +16,7 @@ sd_mmd <- function(nA, nB) {
     return((1 / (nA + 0.5) + 1 / (nB + 0.5))^2)
 }
                            
-compute_md <- function(nA, pA, nB, pB, choice = c("Anscombe", "Freeman")) {
+compute_md <- function(nA, pA, nB, pB) {
 ### Computes the measure of divergence for one given trait
 ### nA & nB: sample sizes in the groups A et B
 ### pA & pB: *transformed* trait frequencies in the groups A et B
