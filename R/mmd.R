@@ -2,7 +2,7 @@ mmd <- function(data, angular = c("Anscombe", "Freeman")) {
 ### data: table of group sample sizes and frequencies, such as returned by the function table_relfreq
 ### angular: choice of a formula for angular transformation
 
-    angular <- match.arg(angular) # to avoid a warning if the user do not specify anything
+    angular <- match.arg(angular) # to avoid a warning if the user does not specify anything
     
     ## 1. Define some useful constants and matrices:
     nb_groups <- nrow(data) / 2 # number of groups in the data
@@ -12,22 +12,25 @@ mmd <- function(data, angular = c("Anscombe", "Freeman")) {
     ## 2. Initialize an empty MMD matrix:
     mmd_matrix <- matrix(0, nrow = nrow(mat_size), ncol = nrow(mat_size))
     group_names <- rownames(mat_size)
-    dimnames(mmd_matrix) <- list(substr(group_names,3,nchar(group_names)), substr(group_names,3,nchar(group_names))) # the rows and columns of mmd_matrix will be labeled according to the group names
+    dimnames(mmd_matrix) <- list(substr(group_names, 3, nchar(group_names)),
+                                 substr(group_names, 3, nchar(group_names))) # the rows and columns of mmd_matrix will be labeled according to the group names
 
     ## 3. Fill in the MMD matrix:
     for (i in 1:nrow(mmd_matrix)) {
-        for (j in 1:ncol(mmd_matrix)) {
+        for (j in 1:ncol(mmd_matrix)) { # for each pari of groups,
             mmd_vect <- rep(NA, ncol(mat_size))
             if (j > i) { # upper-diagonal part, to be filled with MMD values
-                for (k in 1:length(mmd_vect)) { 
-                    mmd_vect[k] <- compute_md(nA = mat_size[i,k], pA = mat_freq[i,k], nB = mat_size[j,k], pB = mat_freq[j,k], choice = angular) 
+                for (k in 1:length(mmd_vect)) { # for each trait,
+                    mmd_vect[k] <- compute_md(nA = mat_size[i,k], pA = mat_freq[i,k],
+                                              nB = mat_size[j,k], pB = mat_freq[j,k],
+                                              choice = angular)
                 }
-                mmd_matrix[i, j] <- sum(mmd_vect) / length(mmd_vect) 
+                mmd_matrix[i, j] <- sum(mmd_vect) / length(mmd_vect)
             } else if (i ==j) { # on the diagonal, fill with null values (dissimilarity between a group and itself)
                 mmd_matrix[i, j] <- 0
             } else { # i.e. i > j: lower-diagonal part, to be filled with SD values
-                for (k in 1:length(mmd_vect)) { 
-                    mmd_vect[k] <- sd_mmd(nA = mat_size[i,k], nB = mat_size[j,k]) 
+                for (k in 1:length(mmd_vect)) {
+                    mmd_vect[k] <- sd_mmd(nA = mat_size[i,k], nB = mat_size[j,k])
                 }
                 mmd_matrix[i, j] <- sqrt(2*sum(mmd_vect)) / length(mmd_vect)
             }
