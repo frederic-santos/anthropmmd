@@ -86,7 +86,9 @@ mmd <- function(data, angular = c("Anscombe", "Freeman")) {
     ###########################
     ## 5. Return the results ##
     ###########################
-    list_results <- list(round(mmd_matrix, 6), round(mmd_sym, 6), mmd_signif, round(mmd_pval, 4))
-    names(list_results) <- c("MMDMatrix", "MMDSym", "MMDSignif", "MMDpval")
+    list_results <- list(MMDMatrix = round(mmd_matrix, 6),
+                         MMDSym = round(mmd_sym, 6),
+                         MMDSignif = mmd_signif,
+                         MMDpval = round(mmd_pval, 4))
     return(list_results)
 }
