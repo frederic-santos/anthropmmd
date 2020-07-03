@@ -9,7 +9,15 @@ compute_omd <- function(data, formule, OMDvalue = 0) {
     nb_groups <- nrow(data) / 2 # number of groups in the data
     mat_size <- data[1:nb_groups, ] # portion of the data corresponding to the sample sizes
     mat_freq <- data[(nb_groups+1):(2*nb_groups), ] # portion of the data corresponding to the relative frequencies
-
+    ## angular transformation of relative frequencies:
+    for (i in 1:nrow(mat_freq)) {
+        for (j in 1:ncol(mat_freq)) {
+            mat_freq[i, j] <- theta(n = mat_size[i, j],
+                                    p = mat_freq[i, j],
+                                    choice = formule)
+        }
+    }
+    
     ## 2. Compute the OMD:
     OMD_matrix <- matrix(NA, nrow = ncol(mat_size), ncol = 1) # initialize an empty matrix
     rownames(OMD_matrix) <- colnames(mat_size)
@@ -22,8 +30,7 @@ compute_omd <- function(data, formule, OMDvalue = 0) {
             for (k in 1:nb_groups) {
                 if (j > k) { # (strict) upper part of the matrix
                     temp_matrix[j,k] <- compute_md(nA = mat_size[j,i], pA = mat_freq[j,i],
-                                                   nB = mat_size[k,i], pB = mat_freq[k,i],
-                                                   choice = formule)
+                                                   nB = mat_size[k,i], pB = mat_freq[k,i])
                 }
             }
         }
