@@ -40,14 +40,11 @@ mmd <- function(data, angular = c("Anscombe", "Freeman")) {
         for (j in 1:nb_groups) { # for each pair of groups (i,j),
             mmd_vect <- rep(NA, nb_traits)
             if (j > i) { # upper-diagonal part, to be filled with MMD values
-                somme <- 0
                 for (k in 1:nb_traits) { # for each trait,
                     mmd_vect[k] <- compute_md(nA = mat_size[i, k], pA = mat_freq[i, k],
                                               nB = mat_size[j, k], pB = mat_freq[j, k])
-                    somme <- somme + ((mat_freq[i, k] - mat_freq[j, k])^2 / (1/(mat_size[i,k]+0.5) + 1/(mat_size[j,k]+0.5)))
                 }
                 mmd_matrix[i, j] <- sum(mmd_vect) / nb_traits
-                mmd_pval[i, j] <- mmd_pval[j, i] <- pchisq(somme, df = nb_traits, lower.tail = FALSE)
             } else if (i == j) { # on the diagonal, fill with null values (dissimilarity between a group and itself)
                 mmd_matrix[i, j] <- 0
             } else { # i.e. i > j: lower-diagonal part, to be filled with SD values
@@ -56,6 +53,17 @@ mmd <- function(data, angular = c("Anscombe", "Freeman")) {
                 }
                 mmd_matrix[i, j] <- sqrt(2 * sum(mmd_vect)) / nb_traits
             }
+        }
+    }
+
+    ## TODO : à factoriser fortement
+    for (i in 1:nb_groups) {
+        for (j in 1:nb_groups) { # for each pair of groups (i,j),
+            somme <- 0
+            for (k in 1:nb_traits) { # for each trait,
+                somme <- somme + ((mat_freq[i, k] - mat_freq[j, k])^2 / (1 / (mat_size[i, k] + 0.5) + 1 / (mat_size[j, k] + 0.5)))
+            }
+            mmd_pval[i, j] <- mmd_pval[j, i] <- pchisq(somme, df = nb_traits, lower.tail = FALSE)
         }
     }
 
