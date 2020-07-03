@@ -46,7 +46,7 @@ Usually, the user will have recorded the data in one of the the two following fo
 ### Raw binary data
 Most of the time, the data will be formatted as a classical dataframe with $n$ rows (one per individual) and $p+1$ columns (the first column must be a group indicator; the $p$ other columns correspond to the $p$ binary traits observed). Each trait has two possible values: $1$ if present, $0$ if absent (missing values are allowed). Rownames are optional but colnames (i.e., `header`s) are mandatory.
 
-An artifical dataset, `toyMMD`, is available in the package to give an example of such a format:
+An artificial dataset, `toyMMD`, is available in the package to give an example of such a format:
 
 ```{r rows.print=8}
 data(toyMMD)
