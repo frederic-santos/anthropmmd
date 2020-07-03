@@ -19,10 +19,10 @@ sd_mmd <- function(nA, nB) {
 compute_md <- function(nA, pA, nB, pB, choice = c("Anscombe", "Freeman")) {
 ### Computes the measure of divergence for one given trait
 ### nA & nB: sample sizes in the groups A et B
-### pA & pB: trait frequencies in the groups A et B
-### choice: variant of angular transformation to be used    
-    return((theta(nA, pA, choice = choice) - theta(nB, pB, choice = choice))^2 - sqrt(sd_mmd(nA, nB)))
-}   
+### pA & pB: *transformed* trait frequencies in the groups A et B
+### choice: variant of angular transformation to be used
+    return((pA - pB)^2 - sqrt(sd_mmd(nA, nB)))
+}
 
 mds_rho <- function(mmd, coor) {
 ### Computes the rho values displayed on MDS plots

@@ -12,7 +12,15 @@ mmd <- function(data, angular = c("Anscombe", "Freeman")) {
     mat_size <- data[1:nb_groups, ]
     ## portion of the data corresponding to the relative frequencies:
     mat_freq <- data[(nb_groups + 1):(2 * nb_groups), ]
-
+    ## angular transformation of relative frequencies:
+    for (i in 1:nrow(mat_freq)) {
+        for (j in 1:ncol(mat_freq)) {
+            mat_freq[i, j] <- theta(n = mat_size[i, j],
+                                    p = mat_freq[i, j],
+                                    choice = angular)
+        }
+    }
+    
     #######################################
     ## 2. Initialize an empty MMD matrix ##
     #######################################
