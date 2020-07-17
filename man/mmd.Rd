@@ -55,18 +55,21 @@ mmd(data, angular = c("Anscombe", "Freeman"))
 }
 
 \examples{
-# Load and visualize a binary dataset:
+## Load and visualize a binary dataset:
 data(toyMMD)
 head(toyMMD)
-# Convert this dataframe into a table of sample sizes and relative
-# frequencies:
+
+## Convert this dataframe into a table of sample sizes and relative
+## frequencies:
 tab <- binary_to_table(toyMMD, relative = TRUE)
 tab
-# Compute and display a symmetrical matrix of MMD values:
-mmd.out <- mmd(tab, angular = "Anscombe")
-mmd.out$MMDSym
-# Significant MMD values are indicated by a star:
-mmd.out$MMDSignif
+
+## Compute and display a symmetrical matrix of MMD values:
+mmd_out <- mmd(tab, angular = "Anscombe")
+mmd_out$MMDSym
+
+## Significant MMD values are indicated by a star:
+mmd_out$MMDSignif
 }
 \author{Frédéric Santos, \email{frederic.santos@u-bordeaux.fr}}
 \concept{MMD}

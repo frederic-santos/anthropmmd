@@ -38,10 +38,11 @@ binary_to_table(data, relative = FALSE)
   \code{\link{start_mmd}}
 }
 \examples{
-# Load and visualize a binary dataset:
+## Load and visualize a binary dataset:
 data(toyMMD)
 head(toyMMD)
-# Convert this dataframe into a table of sample sizes and relative frequencies:
+
+## Convert this dataframe into a table of sample sizes and relative frequencies:
 binary_to_table(toyMMD, relative = TRUE)
 }
 \author{Frédéric Santos, \email{frederic.santos@u-bordeaux.fr}}

@@ -70,16 +70,19 @@ axes = FALSE, gof = FALSE, dim = 2, asp = TRUE, xlim = NULL, ...)
   \code{\link{start_mmd}}, \code{stats::cmdscale}, \code{smacof::smacofSym}
 }
 \examples{
-# Load and visualize a binary dataset:
+## Load and visualize a binary dataset:
 data(toyMMD)
 head(toyMMD)
-# Convert this dataframe into a table of sample sizes and relative
-# frequencies:
+
+## Convert this dataframe into a table of sample sizes and relative
+## frequencies:
 tab <- binary_to_table(toyMMD, relative = TRUE)
 tab
-# Compute and display a symmetrical matrix of MMD values:
+
+## Compute and display a symmetrical matrix of MMD values:
 mmd_out <- mmd(tab, angular = "Freeman")
-# Plot a classical metric MDS in two dimensions:
+
+## Plot a classical metric MDS in two dimensions:
 plot(x = mmd_out, method = "classical",
      axes = TRUE, gof = TRUE, dim = 2)
 }

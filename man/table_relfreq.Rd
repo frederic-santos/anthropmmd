@@ -24,13 +24,15 @@ table_relfreq(tab)
   \code{\link{binary_to_table}}, \code{\link{start_mmd}}
 }
 \examples{
-# Load and visualize a binary dataset:
+## Load and visualize a binary dataset:
 data(toyMMD)
 head(toyMMD)
-# Convert this dataframe into a table of sample sizes and frequencies:
+
+## Convert this dataframe into a table of sample sizes and frequencies:
 tab <- binary_to_table(toyMMD, relative = FALSE)
 tab
-# Convert this table into relative frequencies:
+
+## Convert this table into relative frequencies:
 table_relfreq(tab)
 }
 \author{Frédéric Santos, \email{frederic.santos@u-bordeaux.fr}}

@@ -158,12 +158,14 @@ any change in the analysis settings.
 }
 
 \examples{
-# An example of valid binary dataset:
+## An example of valid binary dataset:
 data(toyMMD)
 head(toyMMD)
-# An example of valid table:
+
+## An example of valid table:
 data(absolute_freqs)
 absolute_freqs
-# Launch the UI:
+
+## Launch the GUI:
 \dontrun{ start_mmd()}
 }
