@@ -3,7 +3,7 @@ AnthropMMD
 [![pipeline status](https://gitlab.com/f-santos/anthropmmd/badges/master/pipeline.svg)](https://gitlab.com/f-santos/anthropmmd/commits/master)
 [![coverage report](https://gitlab.com/f-santos/anthropmmd/badges/master/coverage.svg)](https://gitlab.com/f-santos/anthropmmd/commits/master)
 
-`AnthropMMD` is an R package for an easy calculation of the mean measure of divergence (MMD). It offers both a graphical user interface (for scientists who are not R programmers), and a set of function usable through the command line interface (for reproducible research or scientists who are already familiar with R).
+`AnthropMMD` is an R package for an easy calculation of the mean measure of divergence (MMD). It offers both a graphical user interface (for scientists who are not R programmers), and a set of functions which can be used through the command line interface (for reproducible research or scientists who are already familiar with R).
 
 For the technical and scientific aspects, the package is better described in its *vignette*.
 
