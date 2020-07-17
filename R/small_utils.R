@@ -72,3 +72,18 @@ extract_groups <- function(tab, type) {
         return(substr(noms, 3, nchar(noms))) # thus discard the 'N_' everywhere
     }
 }
+
+mix_matrices <- function(m, n, diag_value = 0) {
+### m, n: (square) matrices, same dimension
+### diag_value: a number
+### Return a matrix composed as follows: upper-diagonal part of m,
+### lower-diagonal part of n, and diagonal equal to diag.
+
+    res <- m # result matrix
+    ## Replace lower part by those of n:
+    res[lower.tri(res)] <- n[lower.tri(n)]
+    ## Fill diagonal with diag_value:
+    diag(res) <- diag_value
+    ## Return result:
+    return(res)
+}
