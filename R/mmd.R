@@ -1,8 +1,9 @@
 mmd <- function(data, angular = c("Anscombe", "Freeman")) {
-### data: table of group sample sizes and frequencies, such as returned by the function table_relfreq
+### data: table of group sample sizes and frequencies,
+###       such as returned by the function table_relfreq
 ### angular: choice of a formula for angular transformation
 
-    angular <- match.arg(angular)
+    angular <- match.arg(angular) # avoid a warning if no arg is given
 
     ##################################################
     ## 1. Define some useful constants and matrices ##
@@ -22,81 +23,63 @@ mmd <- function(data, angular = c("Anscombe", "Freeman")) {
                                     choice = angular)
         }
     }
-    
+
     #######################################
-    ## 2. Initialize an empty MMD matrix ##
+    ## 2. Initialize some empty matrices ##
     #######################################
-    mmd_matrix <- matrix(NA, nrow = nb_groups, ncol = nb_groups)
-    ## the rows and columns of mmd_matrix are labeled according to group names:
-    dimnames(mmd_matrix) <- list(substr(group_names, 3, nchar(group_names)),
-                                 substr(group_names, 3, nchar(group_names)))
-    ## matrix of p-values:
-    mmd_pval <- mmd_matrix
+    ## MMD matrix (symmetrical):
+    mmd_sym <- matrix(NA, nrow = nb_groups, ncol = nb_groups)
+    ## the rows and columns of mmd_sym are labeled according to group names:
+    dimnames(mmd_sym) <- list(substr(group_names, 3, nchar(group_names)),
+                              substr(group_names, 3, nchar(group_names)))
+    ## Other matrices:
+    pval_matrix <- sd_matrix <- signif_matrix <- mmd_sym
 
-    ###############################
-    ## 3. Fill in the MMD matrix ##
-    ###############################
+    #############################
+    ## 3. Fill in the matrices ##
+    #############################
     for (i in 1:nb_groups) {
-        for (j in 1:nb_groups) { # for each pair of groups (i,j),
-            mmd_vect <- rep(NA, nb_traits)
-            if (j > i) { # upper-diagonal part, to be filled with MMD values
-                for (k in 1:nb_traits) { # for each trait,
-                    mmd_vect[k] <- compute_md(nA = mat_size[i, k], pA = mat_freq[i, k],
-                                              nB = mat_size[j, k], pB = mat_freq[j, k])
-                }
-                mmd_matrix[i, j] <- sum(mmd_vect) / nb_traits
-            } else if (i == j) { # on the diagonal, fill with null values (dissimilarity between a group and itself)
-                mmd_matrix[i, j] <- 0
-            } else { # i.e. i > j: lower-diagonal part, to be filled with SD values
-                for (k in 1:nb_traits) {
-                    mmd_vect[k] <- sd_mmd(nA = mat_size[i, k], nB = mat_size[j, k])
-                }
-                mmd_matrix[i, j] <- sqrt(2 * sum(mmd_vect)) / nb_traits
+        for (j in 1:nb_groups) { # For each pair of groups (i, j)...
+            mmd_vect <- sd_vect <- rep(NA, nb_traits)
+            sum_pval <- 0
+            for (k in 1:nb_traits) { # and for each trait k,
+                ## Compute the measure of divergence on trait k:
+                mmd_vect[k] <- compute_md(nA = mat_size[i, k],
+                                          pA = mat_freq[i, k],
+                                          nB = mat_size[j, k],
+                                          pB = mat_freq[j, k])
+                ## Compute the SD for this trait:
+                sd_vect[k] <- sd_mmd(nA = mat_size[i, k], nB = mat_size[j, k])
+                ## Intermediate result for computing the p-value:
+                sum_pval <- sum_pval + ((mat_freq[i, k] - mat_freq[j, k])^2 / (1 / (mat_size[i, k] + 0.5) + 1 / (mat_size[j, k] + 0.5)))
             }
+            ## The MMD is the mean of those MD values:
+            mmd_sym[i, j] <- mean(mmd_vect)
+            ## The associated SD is as follows:
+            sd_matrix[i, j] <- sqrt(2 * sum(mmd_vect)) / nb_traits
+            ## The associated p-value:
+            pval_matrix[i, j] <- pchisq(sum_pval, df = nb_traits,
+                                        lower.tail = FALSE)
+            ## And finally the significance ('*' or 'NS'):
+            signif_matrix[i, j] <- ifelse(pval_matrix[i, j] < 0.05, "*", "NS")
         }
     }
+    diag(mmd_sym) <- 0 # distance between a group and itself must be null
 
-    ## TODO : à factoriser fortement
-    for (i in 1:nb_groups) {
-        for (j in 1:nb_groups) { # for each pair of groups (i,j),
-            somme <- 0
-            for (k in 1:nb_traits) { # for each trait,
-                somme <- somme + ((mat_freq[i, k] - mat_freq[j, k])^2 / (1 / (mat_size[i, k] + 0.5) + 1 / (mat_size[j, k] + 0.5)))
-            }
-            mmd_pval[i, j] <- mmd_pval[j, i] <- pchisq(somme, df = nb_traits, lower.tail = FALSE)
-        }
-    }
-
-    ######################
-    ## 4. Other results ##
-    ######################
-    mmd_sym <- mmd_matrix # a symmetrical matrix of MMD values
-    mmd_signif <- round(mmd_matrix, 3) # matrix of '*' for significant MMDs
-    for (i in 1:nb_groups) {
-        for (j in 1:nb_groups) { # for each pair of traits,
-            if (i > j) {
-                ## lower-diagonal part: replace SD by MMD (or 0 if MMD<0)
-                mmd_sym[i, j] <- max(0, mmd_matrix[j, i])
-                mmd_signif[i, j] <- ifelse(mmd_matrix[j, i] > (2 * mmd_matrix[i, j]),
-                                           "*",
-                                           "NS")
-            } else if (i == j) {
-                ## diagonal
-                mmd_signif[i, j] <- NA
-            }
-            else {
-                ## upper-diagonal part: already filled by MMDs, just replace by 0 if negative
-                mmd_sym[i, j] <- max(0, mmd_sym[i, j])
-            }
-        }
-    }
+    #################################################
+    ## 4. Prepare the matrices for elegant display ##
+    #################################################
+    pval_matrix <- mix_matrices(m = mmd_sym, n = pval_matrix, diag_value = NA)
+    mmd_matrix <- mix_matrices(m = mmd_sym, n = sd_matrix, diag_value = 0)
+    signif_matrix <- mix_matrices(m = round(mmd_sym, 3), n = signif_matrix,
+                                  diag_value = NA)
 
     ###########################
     ## 5. Return the results ##
     ###########################
     list_results <- list(MMDMatrix = round(mmd_matrix, 6),
                          MMDSym = round(mmd_sym, 6),
-                         MMDSignif = mmd_signif,
-                         MMDpval = round(mmd_pval, 4))
+                         MMDSignif = signif_matrix,
+                         MMDpval = round(pval_matrix, 4))
     return(list_results)
 }
