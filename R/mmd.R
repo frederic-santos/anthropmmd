@@ -54,10 +54,10 @@ mmd <- function(data, angular = c("Anscombe", "Freeman")) {
                 sum_pval <- sum_pval + ((mat_freq[i, k] - mat_freq[j, k])^2 / (1 / (mat_size[i, k] + 0.5) + 1 / (mat_size[j, k] + 0.5)))
             }
             ## The MMD is the mean of those MD values:
-            mmd_sym[i, j] <- mean(mmd_vect)
+            mmd_sym[i, j] <- max(mean(mmd_vect), 0) # replace by 0 if negative
             if (i != j) { # avoid NaN when comparing a group to itself
                 ## The associated SD is as follows:
-                sd_matrix[i, j] <- sqrt(2 * sum(mmd_vect)) / nb_traits
+                sd_matrix[i, j] <- sqrt(2 * sum(sd_vect)) / nb_traits
                 ## The associated p-value:
                 pval_matrix[i, j] <- pchisq(sum_pval, df = nb_traits,
                                             lower.tail = FALSE)
