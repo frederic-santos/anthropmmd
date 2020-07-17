@@ -5,7 +5,7 @@ AnthropMMD
 
 `AnthropMMD` is an R package for an easy calculation of the mean measure of divergence (MMD). It offers both a graphical user interface (for scientists who are not R programmers), and a set of functions which can be used through the command line interface (for reproducible research or scientists who are already familiar with R).
 
-For the technical and scientific aspects, the package is better described in its *vignette*.
+For the technical and scientific aspects, the package is better described in its [vignette](https://cran.r-project.org/web/packages/AnthropMMD/vignettes/intro_AnthropMMD.html).
 
 Feature requests or bug reports are welcome.
 
