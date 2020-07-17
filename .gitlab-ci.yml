@@ -14,7 +14,7 @@ testing:
     allow_failure: true
     when: on_success
     script:
-        - sudo apt-get update && apt-get install --yes qpdf
+        - sudo apt-get update && apt-get install --yes libxt6 qpdf
         - R -e "remotes::install_deps()"
         - R -e 'devtools::check()'
         - R -e 'install.packages("DT")'
