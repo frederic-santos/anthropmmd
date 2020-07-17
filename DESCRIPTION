@@ -19,5 +19,5 @@ Suggests:
 License: CeCILL-2 | file LICENSE
 Encoding: UTF-8
 URL: https://gitlab.com/f-santos/anthropmmd/
-BugReports: https://gitlab.com/f-santos/anthropmmd/issues/new
+BugReports: https://gitlab.com/f-santos/anthropmmd/issues/new/
 VignetteBuilder: knitr
