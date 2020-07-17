@@ -13,7 +13,8 @@ importFrom("grDevices", "dev.off", "png")
 importFrom("plotrix", "thigmophobe.labels")
 importFrom("scatterplot3d", "scatterplot3d")
 importFrom("smacof", "smacofSym")
-importFrom("stats", "as.dist", "cmdscale", "cor", "dist", "fisher.test", "hclust", "na.omit", "sd")
+importFrom("stats", "as.dist", "cmdscale", "cor", "dist", "fisher.test",
+           "hclust", "na.omit", "pchisq", "sd")
 importFrom("utils", "read.csv", "read.table", "write.csv")
 
 S3method(plot, anthropmmd_result)
