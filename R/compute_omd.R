@@ -1,50 +1,67 @@
 compute_omd <- function(data, formule, OMDvalue = 0) {
-### Computes the overall measure of divergence for each trait
 ### tab: the data in 'table of frequencies' format
 ### formule: string, "Anscombe" or "Freeman"
 ### OMDvalue: OMD (overall measure of divergence) threshold for a trait to be kept
+### Compute the overall measure of divergence for each trait.
 ### output -> list with 4 components
 
-    ## 1. Define some useful constants and matrices:
+    ##################################################
+    ## 1. Define some useful constants and matrices ##
+    ##################################################
     nb_groups <- nrow(data) / 2 # number of groups in the data
-    mat_size <- data[1:nb_groups, ] # portion of the data corresponding to the sample sizes
-    mat_freq <- data[(nb_groups+1):(2*nb_groups), ] # portion of the data corresponding to the relative frequencies
+    ## part of the data corresponding to the sample sizes:
+    mat_size <- data[1:nb_groups, ]
+    ## part of the data corresponding to the relative frequencies:
+    mat_freq <- data[seq(from = nb_groups + 1, to = 2 * nb_groups, by = 1), ]
     ## angular transformation of relative frequencies:
-    for (i in 1:nrow(mat_freq)) {
-        for (j in 1:ncol(mat_freq)) {
+    for (i in seq_len(nrow(mat_freq))) {
+        for (j in seq_len(ncol(mat_freq))) {
             mat_freq[i, j] <- theta(n = mat_size[i, j],
                                     p = mat_freq[i, j],
                                     choice = formule)
         }
     }
-    
-    ## 2. Compute the OMD:
-    OMD_matrix <- matrix(NA, nrow = ncol(mat_size), ncol = 1) # initialize an empty matrix
-    rownames(OMD_matrix) <- colnames(mat_size)
-    temp_matrix <- matrix(0, nrow = nb_groups, ncol = nb_groups) # matrix that will contain, for each trait, the MD between each pair of groups.
-    ## OMD = sum of MD's
 
-    for (i in 1:ncol(mat_size)) { # for each trait
+    ########################
+    ## 2. Compute the OMD ##
+    ########################
+    ## Initialize an empty matrix:
+    omd_matrix <- matrix(NA, nrow = ncol(mat_size), ncol = 1)
+    rownames(omd_matrix) <- colnames(mat_size)
+    ## This will contain, for each trait, the MD between each pair of groups:
+    temp_matrix <- matrix(0, nrow = nb_groups, ncol = nb_groups)
+    ## (reminder: OMD = sum of MD's)
 
-        for (j in 1:nb_groups) { # for each pair of groups
-            for (k in 1:nb_groups) {
+    for (i in seq_len(ncol(mat_size))) { # For each trait,
+
+        for (j in seq_len(nb_groups)) { # and for each pair of groups,
+            for (k in seq_len(nb_groups)) {
                 if (j > k) { # (strict) upper part of the matrix
-                    temp_matrix[j,k] <- compute_md(nA = mat_size[j,i], pA = mat_freq[j,i],
-                                                   nB = mat_size[k,i], pB = mat_freq[k,i])
+                    temp_matrix[j, k] <- compute_md(nA = mat_size[j, i],
+                                                    pA = mat_freq[j, i],
+                                                    nB = mat_size[k, i],
+                                                    pB = mat_freq[k, i])
                 }
             }
         }
 
-        OMD_matrix[i, 1] <- sum(temp_matrix) # OMD of trait number "i"
+        omd_matrix[i, 1] <- sum(temp_matrix) # OMD of trait number "i"
     }
-    ## At this stage, OMD_matrix = OMD values for each trait, sorted in the original order of traits in the data
+    ## At this stage, omd_matrix = OMD values for each trait,
+    ## sorted in the original order of traits in the data
+
+    ###########################
+    ## 3. Return the results ##
+    ###########################
+    ## # OMD values sorted by decreasing order:
+    omd_matrix_sorted <- as.matrix(omd_matrix[order(omd_matrix[, 1], decreasing = TRUE), ])
+    ## OMD values, sorted and *greater than a given threshold*:
+    omd_matrix_sorted_pos <- as.matrix(omd_matrix_sorted[omd_matrix_sorted[,1] > OMDvalue, ])
+    ## OMD values, in the original order and *greater than a given threshold*:
+    omd_matrix_pos <- as.matrix(omd_matrix[omd_matrix[,1] > OMDvalue, ])
     
-    ## 3. Return the results:
-    OMD_matrix_sorted <- as.matrix(OMD_matrix[order(OMD_matrix[,1], decreasing = TRUE), ]) # OMD values sorted by decreasing order
-    OMD_matrix_sorted_pos <- as.matrix(OMD_matrix_sorted[OMD_matrix_sorted[,1] > OMDvalue, ]) # OMD values, sorted and *greater than a given threshold*
-    OMD_matrix_pos <- as.matrix(OMD_matrix[OMD_matrix[,1] > OMDvalue, ]) # OMD values, in the original order and *greater than a given threshold*
-    return(list("Matrix" = OMD_matrix,
-                "Pos" = OMD_matrix_pos,
-                "Sorted" = OMD_matrix_sorted,
-                "SortedPos" = OMD_matrix_sorted_pos))
+    return(list("Matrix" = omd_matrix,
+                "Pos" = omd_matrix_pos,
+                "Sorted" = omd_matrix_sorted,
+                "SortedPos" = omd_matrix_sorted_pos))
 }
