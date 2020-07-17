@@ -70,13 +70,13 @@ tab
 Sometimes, in particular if the data were extracted from research articles rather than true exprimentation, the user will only know the sample sizes and absolute trait frequencies in each group. As previously stated, those data are perfectly sufficient to compute MMD values. Here is an example of such a table:
 ```{r}
 data(absolute_freqs)
-absolute_freqs
+print(absolute_freqs)
 ```
 
 If there are $k$ groups in the data, the first $k$ rows (whose names must start with an `N_` prefix, followed by the group labels) indicates the sample sizes of each trait in each group, and the last $k$ rows indicates the *absolute* trait frequencies. Such a table can be directly imported by the user, but **must** be converted to *relative* trait frequencies prior to the analysis, for instance by using the function `table_relfreq`:
 ```{r}
 tab <- table_relfreq(absolute_freqs)
-tab
+print(tab)
 ```
 
 ### Important remark
@@ -109,22 +109,23 @@ mmd.result
 
 * The first component, `$MMDMatrix`, follows the presentation adopted in most research articles [@Donlon00]: the true MMD values are indicated above the diagonal, and their standard deviations are indicated below the diagonal.
 * A MMD value can be considered as significant if it is greater than twice its standard deviation. Significant MMD values are indicated by a `*` in the component `$MMDSignif`.
-* Finally, the component `$MMDSym` is a symmetrical matrix of MMD values, with a null diagonal. This matrix of dissimilarities can be used to perform a multidimensional scaling or a hierarchical clustering to visualize the distances among the groups.
+* The component `$MMDSym` is a symmetrical matrix of MMD values, with a null diagonal. This matrix of dissimilarities can be used to perform a multidimensional scaling or a hierarchical clustering to visualize the distances among the groups.
+* Finally, a p-value (for non-nullity of each MMD value) is given by the composant `$MMDpval`. Theoretical details for this test of significance can be found in @Souza77.
 
 ## Graphical representations of MMD
 ### Multidimensional scaling
-Although `mmd.result$MMDSym` can perfectly be passed to your favourite function to produce a MDS plot, `AnthropMMD` also proposes a built-in function for such a graphical representation: `plot_mmd`. 
+Although `mmd.result$MMDSym` can perfectly be passed to your favourite function to produce a MDS plot, `AnthropMMD` also proposes a built-in generic function for such a graphical representation: `plot`. 
 
 The MDS can be computed using the classical `stats::cmdscale` function (and the produces a metric MDS), or several variants of MDS algorithms implemented in the R package `smacof`.
 
 For instance, we plot here the MDS coordinates computed with one variant of SMACOF algorithms:
 ```{r}
 par(cex = 0.8)
-plot_mmd(data = mmd.result$MMDSym, method = "interval", 
-         gof = TRUE, axes = TRUE, xlim = c(-1.2, 0.75))
+plot(x = mmd.result, method = "interval", 
+     gof = TRUE, axes = TRUE, xlim = c(-1.2, 0.75))
 ```
 
-The argument `gof = TRUE` displays goodness of fits statistics for the MDS conigurations directly on the plot.
+The argument `gof = TRUE` displays goodness of fits statistics for the MDS configurations directly on the plot.
 
 ### Hierarchical clustering
 `AnthropMMD` does not propose a built-in function for hierarchical clustering, but such a plot can easily be obtained with the usual R functions.
