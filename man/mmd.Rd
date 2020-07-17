@@ -4,20 +4,24 @@
   Compute MMD values from a table of sample sizes and relative
   frequencies
 }
+
 \description{
   Compute various MMD results, typically using a table returned by the
   function \code{\link{binary_to_table}} with the argument
   \code{relative = TRUE}.
 }
+
 \usage{
 mmd(data, angular = c("Anscombe", "Freeman"))
 }
+
 \arguments{
   \item{data}{A table of sample sizes and frequencies}
   \item{angular}{Choice of a formula for angular transformation: either
     Anscombe or Freeman-Tukey transformation.}
 }
-\value{A list with three elements:
+
+\value{A list with four components:
   \item{MMDMatrix}{Following the presentation adopted in many research
     articles, a matrix filled with MMD values above the diagonal, and
     standard deviations of MMD below the diagonal.}
@@ -25,8 +29,16 @@ mmd(data, angular = c("Anscombe", "Freeman"))
     values are replaced by zeroes.}
   \item{MMDSignif}{A matrix where any pair of traits having a
     significant MMD value is indicated by a star, \sQuote{*}.}
+  \item{MMDpval}{A matrix filled with MMD values above the diagonal, and
+    p-values below the diagonal.}
 }
+
 \references{
+  de Souza, P. and Houghton, P. (1977). The mean measure of divergence
+  and the use of non-metric data in the estimation of biological
+  distances. \emph{Journal of Archaeological Science}, \bold{4}(2),
+  163--169. doi: 10.1016/0305-4403(77)90063-2
+  
   Harris, E. F. and Sjøvold, T. (2004) Calculation of Smith's mean
   measure of divergence for intergroup comparisons using nonmetric
   data. \emph{Dental Anthropology}, \bold{17}(3), 83--93.
@@ -37,9 +49,11 @@ mmd(data, angular = c("Anscombe", "Freeman"))
   traits. \emph{American Journal of Physical Anthropology}, \bold{157},
   284--294. doi: 10.1002/ajpa.22708
 }
+
 \seealso{
   \code{\link{start_mmd}}
 }
+
 \examples{
 # Load and visualize a binary dataset:
 data(toyMMD)
