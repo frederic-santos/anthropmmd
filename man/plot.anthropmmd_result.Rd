@@ -10,7 +10,7 @@
   proposed, and most of them are based on the R package \code{smacof}.
 }
 \usage{
-plot_mmd(x, method = c("classical", "interval", "ratio", "ordinal"),
+\method{plot}{anthropmmd_result}(x, method = c("classical", "interval", "ratio", "ordinal"),
 axes = FALSE, gof = FALSE, dim = 2, asp = TRUE, xlim = NULL)
 }
 \arguments{
