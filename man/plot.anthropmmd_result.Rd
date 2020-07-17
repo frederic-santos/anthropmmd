@@ -11,7 +11,7 @@
 }
 \usage{
 \method{plot}{anthropmmd_result}(x, method = c("classical", "interval", "ratio", "ordinal"),
-axes = FALSE, gof = FALSE, dim = 2, asp = TRUE, xlim = NULL)
+axes = FALSE, gof = FALSE, dim = 2, asp = TRUE, xlim = NULL, ...)
 }
 \arguments{
   \item{x}{An object of class \code{anthropmmd_result}, produced by the
@@ -29,6 +29,7 @@ axes = FALSE, gof = FALSE, dim = 2, asp = TRUE, xlim = NULL)
   \item{asp}{Boolean. If \code{TRUE}, the same scale is used for all
     axes. More details below.}
   \item{xlim}{Parameter passed to \code{plot}, can be \code{NULL}.}
+  \item{...}{Other arguments possibly passed to \code{plot}.}
 }
 \value{
   This function returns no value by itself, and only plots a MDS in a
