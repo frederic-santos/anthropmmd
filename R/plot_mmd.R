@@ -1,4 +1,7 @@
-plot_mmd <- function(data, method = c("classical", "interval", "ratio", "ordinal"), axes = FALSE, gof = FALSE, dim = 2, asp = TRUE, xlim = NULL) {
+plot_mmd <- function(data,
+                     method = c("classical", "interval", "ratio", "ordinal"),
+                     axes = FALSE, gof = FALSE, dim = 2, asp = TRUE,
+                     xlim = NULL) {
 ### data: symmetrical matrix of MMD values
 ### method: type of MDS. "classical" for cmdscale, or one of SMACOF methods
 ### axes: boolean, display axes on plot or not

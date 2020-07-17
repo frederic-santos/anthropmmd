@@ -1,5 +1,5 @@
-\name{plot_mmd}
-\alias{plot_mmd}
+\name{plot.anthropmmd_result}
+\alias{plot.anthropmmd_result}
 \title{
   Display a multidimensional scaling (MDS) plot with the MMD
   dissimilarities as input
@@ -10,13 +10,12 @@
   proposed, and most of them are based on the R package \code{smacof}.
 }
 \usage{
-plot_mmd(data, method = c("classical", "interval", "ratio", "ordinal"),
+plot_mmd(x, method = c("classical", "interval", "ratio", "ordinal"),
 axes = FALSE, gof = FALSE, dim = 2, asp = TRUE, xlim = NULL)
 }
 \arguments{
-  \item{data}{A symmetrical matrix of MMD values; typically, it will be
-    the component \code{$MMDSym} of the result returned by the function
-    \code{\link{mmd}}}.
+  \item{x}{An object of class \code{anthropmmd_result}, produced by the
+    function \code{\link{mmd}}.}.
   \item{method}{Specification of MDS type. \code{classical} uses the
     metric MDS implemented in \code{stats::cmdscale}; the three other
     values are passed to the R function \code{smacof::smacofSym} (see
@@ -78,9 +77,9 @@ head(toyMMD)
 tab <- binary_to_table(toyMMD, relative = TRUE)
 tab
 # Compute and display a symmetrical matrix of MMD values:
-mmd.out <- mmd(tab, angular = "Freeman")
+mmd_out <- mmd(tab, angular = "Freeman")
 # Plot a classical metric MDS in two dimensions:
-plot_mmd(data = mmd.out$MMDSym, method = "classical",
-         axes = TRUE, gof = TRUE, dim = 2)
+plot(x = mmd_out, method = "classical",
+     axes = TRUE, gof = TRUE, dim = 2)
 }
 \author{Frédéric Santos, \email{frederic.santos@u-bordeaux.fr}}
