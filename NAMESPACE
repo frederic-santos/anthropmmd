@@ -1,11 +1,13 @@
 export("binary_to_table")
 export("mmd")
-export("plot_mmd")
+export("plot.anthropmmd_result")
 export("select_traits")
 export("start_mmd")
 export("StartMMD")
 export("table_relfreq")
+
 import(shiny)
+
 importFrom("graphics", "legend", "par", "plot", "text")
 importFrom("grDevices", "dev.off", "png")
 importFrom("plotrix", "thigmophobe.labels")
@@ -13,3 +15,5 @@ importFrom("scatterplot3d", "scatterplot3d")
 importFrom("smacof", "smacofSym")
 importFrom("stats", "as.dist", "cmdscale", "cor", "dist", "fisher.test", "hclust", "na.omit", "sd")
 importFrom("utils", "read.csv", "read.table", "write.csv")
+
+S3method(plot, anthropmmd_result)

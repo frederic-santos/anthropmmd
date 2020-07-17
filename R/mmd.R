@@ -83,5 +83,6 @@ mmd <- function(data, angular = c("Anscombe", "Freeman")) {
                          MMDSym = round(mmd_sym, 6),
                          MMDSignif = signif_matrix,
                          MMDpval = round(pval_matrix, 4))
+    class(list_results) <- "anthropmmd_result"
     return(list_results)
 }

@@ -1,3 +1,12 @@
+# AnthropMMD 3.1.0 (in development)
+
+## Major changes
+* A new generic function, `plot()`, is added. It replaces `plot_mmd()`. The old `plot_mmd()` is still available for compatibility purposes, but is deprecated.
+* p-values are now implemented in `mmd()`.
+
+## Other changes
+* Improved code readability.
+
 # AnthropMMD 3.0.1 (Release date: 2019-07-16)
 
 ## Minor changes
