@@ -55,13 +55,15 @@ mmd <- function(data, angular = c("Anscombe", "Freeman")) {
             }
             ## The MMD is the mean of those MD values:
             mmd_sym[i, j] <- mean(mmd_vect)
-            ## The associated SD is as follows:
-            sd_matrix[i, j] <- sqrt(2 * sum(mmd_vect)) / nb_traits
-            ## The associated p-value:
-            pval_matrix[i, j] <- pchisq(sum_pval, df = nb_traits,
-                                        lower.tail = FALSE)
-            ## And finally the significance ('*' or 'NS'):
-            signif_matrix[i, j] <- ifelse(pval_matrix[i, j] < 0.05, "*", "NS")
+            if (i != j) { # avoid NaN when comparing a group to itself
+                ## The associated SD is as follows:
+                sd_matrix[i, j] <- sqrt(2 * sum(mmd_vect)) / nb_traits
+                ## The associated p-value:
+                pval_matrix[i, j] <- pchisq(sum_pval, df = nb_traits,
+                                            lower.tail = FALSE)
+                ## And finally the significance ('*' or 'NS'):
+                signif_matrix[i, j] <- ifelse(pval_matrix[i, j] < 0.05, "*", "NS")
+            }
         }
     }
     diag(mmd_sym) <- 0 # distance between a group and itself must be null
