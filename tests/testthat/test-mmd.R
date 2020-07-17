@@ -56,3 +56,8 @@ test_that("MMD values are correct with Freeman-Tukey transformation", {
 test_that("MMD significance is OK", {
     expect_equal(mmd_ans$MMDSignif, res.sig)
 })
+
+## Tests for p-values:
+test_that("p-values are OK", {
+    expect_equal(mmd_ans$MMDpval[5, 3], 0.0954)
+})
