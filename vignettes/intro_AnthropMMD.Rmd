@@ -110,7 +110,7 @@ mmd.result
 * The first component, `$MMDMatrix`, follows the presentation adopted in most research articles [@Donlon00]: the true MMD values are indicated above the diagonal, and their standard deviations are indicated below the diagonal.
 * A MMD value can be considered as significant if it is greater than twice its standard deviation. Significant MMD values are indicated by a `*` in the component `$MMDSignif`.
 * The component `$MMDSym` is a symmetrical matrix of MMD values, with a null diagonal. This matrix of dissimilarities can be used to perform a multidimensional scaling or a hierarchical clustering to visualize the distances among the groups.
-* Finally, a p-value (for non-nullity of each MMD value) is given by the composant `$MMDpval`. Theoretical details for this test of significance can be found in @Souza77.
+* Finally, p-values for non-nullity of each MMD value are given (in the lower triangular part of the matrix returned) by the component `$MMDpval`. Theoretical details for this test of significance can be found in @Souza77.
 
 ## Graphical representations of MMD
 ### Multidimensional scaling
